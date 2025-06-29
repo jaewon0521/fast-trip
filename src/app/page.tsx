@@ -13,7 +13,7 @@ export default async function Home() {
   if (!user) {
     // If user is not logged in, redirect to the login page
     return (
-      <form className={styles.main} action={"/api/auth/kakao"}>
+      <form action={"/api/auth/kakao"}>
         <button type="submit">카카오 로그인</button>
       </form>
     );
@@ -22,5 +22,12 @@ export default async function Home() {
   console.log(user);
   console.log(session);
 
-  return <div>{user.user_metadata.name}</div>;
+  return (
+    <form action={"/api/auth/logout"} method="POST">
+      {user.user_metadata.name}
+      <button type="submit">로그아웃</button>
+    </form>
+  );
 }
+
+// Provider user Info
