@@ -1,5 +1,4 @@
 export default function MainPage() {
-  console.log("auth route group page called");
-
+  console.log("commit test");
   return <div>auth route group page</div>;
 }
