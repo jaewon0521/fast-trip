@@ -13,8 +13,19 @@ export default async function Navbar() {
         </div>
         <div className="flex items-center gap-4">
           {user ? (
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-500 font-medium">안녕하세요, {user.user_metadata.name}님!</span>
+            <div className="flex items-center">
+              <div className="border-0 rounded-2xl overflow-hidden">
+                <Image
+                  className="rounded-full object-cover"
+                  src={user.user_metadata.avatar_url}
+                  alt="avatar"
+                  width={30}
+                  height={30}
+                />
+              </div>
+              <div className="border-gray-100 rounded-md py-1 px-3 ml-2 mr-4 shadow-md flex items-center gap-2">
+                <span className="text-sm text-gray-500 font-medium">{user.user_metadata.name}</span>
+              </div>
               <form action="/api/auth/logout" method="POST" className="m-0">
                 <Button type="submit" variant="destructive">
                   로그아웃
