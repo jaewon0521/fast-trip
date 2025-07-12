@@ -27,7 +27,7 @@ export default async function Navbar() {
                 <span className="text-sm text-gray-500 font-medium">{user.user_metadata.name}</span>
               </div>
               <form action="/api/auth/logout" method="POST" className="m-0">
-                <Button type="submit" variant="destructive">
+                <Button type="submit" variant="outline">
                   로그아웃
                 </Button>
               </form>
