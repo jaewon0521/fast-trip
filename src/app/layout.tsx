@@ -26,8 +26,10 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Navbar />
-        <main className="max-w-[1200px] mx-auto pl-8 pr-4 max-md:px-4 py-2">{children}</main>/
+        <header>
+          <Navbar />
+        </header>
+        <main className="h-[calc(100vh-77px)]">{children}</main>
       </body>
     </html>
   );

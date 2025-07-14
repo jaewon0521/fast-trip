@@ -1,6 +1,7 @@
 import { getUser } from "@/utils/auth";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Navbar() {
   const user = await getUser();
@@ -9,7 +10,9 @@ export default async function Navbar() {
     <nav className="sticky top-0 z-[9999] py-1.5 px-0 bg-white border-b border-gray-200 shadow-md">
       <div className="max-w-[1200px] mx-auto flex justify-between items-center h-16 max-w-[768px]:py-0 px-4">
         <div>
-          <h1 className="font-bold text-2xl text-blue-500 text-decoration-none max-w-[768px]:text-sm">Fast Trip</h1>
+          <Link href="/">
+            <h1 className="font-bold text-2xl text-blue-500 text-decoration-none max-w-[768px]:text-sm">Fast Trip</h1>
+          </Link>
         </div>
         <div className="flex items-center gap-4">
           {user ? (
