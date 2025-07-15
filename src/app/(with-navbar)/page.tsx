@@ -1,5 +1,6 @@
 import { FeatureGrid } from "@/components/grid";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default async function Home() {
   const features = [
@@ -22,7 +23,7 @@ export default async function Home() {
   ];
 
   return (
-    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center pt-36 px-8">
+    <div className="min-h-[calc(100vh-64px)] flex flex-col items-center pt-24 px-8">
       <div className="flex flex-col gap-30 max-w-[900px]">
         <section className="flex flex-col items-center">
           <h2 className="text-5xl font-extrabold bg-gradient-to-tr from-blue-500 to-violet-500 bg-clip-text text-transparent mb-4 leading-tight animate-pulse">
@@ -30,8 +31,8 @@ export default async function Home() {
           </h2>
           <p className="text-gray-500">AI 여행 경로 추천 서비스는 나만의 여행을 더욱 특별하게 만들어 줍니다.</p>
           <div className="mt-5">
-            <Button variant="brand" size="lg">
-              시작하기
+            <Button variant="brand" size="lg" asChild>
+              <Link href="/schedule/question">시작하기</Link>
             </Button>
           </div>
         </section>
