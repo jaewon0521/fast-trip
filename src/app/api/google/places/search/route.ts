@@ -1,5 +1,6 @@
 import { extractError } from "@/lib/error";
 import { httpClient } from "@/lib/fetch";
+import { NextResponseError } from "@/lib/serverError";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -14,16 +15,12 @@ export async function GET(request: Request) {
   const query = `${region} 주변 맛집 및 주변 명소`;
 
   if (!region) {
-    return NextResponse.json(
-      { error: "도시를 선택해 주세요." },
-      { status: 400 }
-    );
+    return new NextResponseError().BadRequest("도시를 선택해 주세요.");
   }
 
   if (!GoogleApiKey) {
-    return NextResponse.json(
-      { message: "Google API 키가 설정되지 않았습니다." },
-      { status: 500 }
+    return new NextResponseError().Unauthorized(
+      "Google API 키가 설정되지 않았습니다."
     );
   }
 
@@ -38,10 +35,6 @@ export async function GET(request: Request) {
   } catch (e) {
     const error = extractError(e);
 
-    console.error("서버 오류: ", error);
-    return NextResponse.json(
-      { message: "내부 서버 오류 발생" },
-      { status: 500 }
-    );
+    return new NextResponseError().InternalServerError(error.message);
   }
 }

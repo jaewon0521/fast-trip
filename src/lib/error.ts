@@ -1,20 +1,29 @@
-export interface FetchErrorType {
-  status: number;
-  message: string;
-  error: string;
-}
+import { ErrorResponse, ErrorCode } from "./types/error-types";
+
+// API 호출 시에 에러 처리를 위한 클래스 입니다.
 
 class FetchError extends Error {
-  constructor(public response: Response, public data: any) {
-    super(`Fetch failed with status ${data.statusCode}`);
+  constructor(public response: Response, public data: ErrorResponse) {
+    super(`Fetch failed with status ${data?.status ?? 500}`);
   }
 }
 
 export async function catchError(response: Response, method?: string) {
   if (!response.ok) {
-    const data = await response.json();
+    let data: ErrorResponse;
 
-    console.error(`[Error] (${method}) ${response.url}`, data);
+    try {
+      data = await response.json();
+    } catch {
+      // JSON 파싱 실패 시 기본 에러 응답 생성
+      data = {
+        status: response.status,
+        message: response.statusText || "Unknown error",
+        error: "PARSE_ERROR",
+      };
+    }
+
+    console.log(`[Error] (${method}) ${response.url}`, data);
 
     throw new FetchError(response, data);
   }
@@ -22,15 +31,14 @@ export async function catchError(response: Response, method?: string) {
   return response;
 }
 
-export function extractError(e: any): FetchErrorType {
+export function extractError(e: any): ErrorResponse {
   if (e instanceof FetchError) {
-    const data = e.data;
-    return data;
+    return e.data;
   }
 
   return {
     status: 500,
     message: e?.message ?? "Unknown Error",
-    error: e?.error ?? "Unknown",
+    error: e?.error ?? "INTERNAL_ERROR",
   };
 }
