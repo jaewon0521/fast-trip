@@ -1,17 +1,13 @@
 import { extractError } from "@/lib/error";
 import { httpClient } from "@/lib/fetch";
+import { GeocodingResponse } from "@/service/google/dto";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
+  // 쿼리 파라미터에서 place_id 추출
   const { searchParams } = new URL(request.url);
   const region = searchParams.get("region");
-
-  //호출 쿼리 파라미터 설정
   const GoogleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY;
-  const fields =
-    "place_id,name,formatted_address,geometry.location,rating,photos";
-  const language = "ko";
-  const query = `${region} 주변 맛집 및 주변 명소`;
 
   if (!region) {
     return NextResponse.json(
@@ -19,7 +15,7 @@ export async function GET(request: Request) {
       { status: 400 }
     );
   }
-
+  
   if (!GoogleApiKey) {
     return NextResponse.json(
       { message: "Google API 키가 설정되지 않았습니다." },
@@ -29,19 +25,17 @@ export async function GET(request: Request) {
 
   try {
     const data = await httpClient("google-map")
-      .url(
-        `/place/textsearch/json?query=${query}&key=${GoogleApiKey}&fields=${fields}&language=${language}`
-      )
-      .call();
+      .url(`/geocode/json?address=${region}&language=ko&key=${GoogleApiKey}`)
+      .call<GeocodingResponse>();
 
-    return NextResponse.json(data);
+    return NextResponse.json(data.results[0]);
   } catch (e) {
     const error = extractError(e);
 
-    console.error("서버 오류: ", error);
+    console.error("서버 오류:", error);
     return NextResponse.json(
-      { message: "내부 서버 오류 발생" },
-      { status: 500 }
+      { message: error.message },
+      { status: error.status }
     );
   }
 }
