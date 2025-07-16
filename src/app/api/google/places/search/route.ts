@@ -1,6 +1,7 @@
 import { extractError } from "@/lib/error";
 import { httpClient } from "@/lib/fetch";
 import { NextResponseError } from "@/lib/serverError";
+import { PlaceTextSearchResponse } from "@/service/google/places-dto";
 import { NextResponse } from "next/server";
 
 export async function GET(request: Request) {
@@ -29,7 +30,7 @@ export async function GET(request: Request) {
       .url(
         `/place/textsearch/json?query=${query}&key=${GoogleApiKey}&fields=${fields}&language=${language}`
       )
-      .call();
+      .call<PlaceTextSearchResponse>();
 
     return NextResponse.json(data);
   } catch (e) {
