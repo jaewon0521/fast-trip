@@ -42,6 +42,16 @@ class ApiBuilder {
     return this;
   }
 
+  public cache(cache: RequestCache) {
+    this.options.cache = cache;
+    return this;
+  }
+
+  public next(next: NextFetchRequestConfig) {
+    this.options.next = next;
+    return this;
+  }
+
   public errorHandler(errorHandler: boolean) {
     this.withErrorHandler = errorHandler;
     return this;
@@ -61,7 +71,7 @@ type ApiBaseType = "server" | "google-map";
 export function httpClient(base: ApiBaseType = "server"): ApiBuilder {
   const url =
     base === "server"
-      ? "http:localhost:3000"
+      ? process.env.NEXT_PUBLIC_BASE_URL!
       : "https://maps.googleapis.com/maps/api";
 
   return new ApiBuilder(url);
