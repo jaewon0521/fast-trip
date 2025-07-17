@@ -27,7 +27,7 @@ interface Geometry {
   bounds?: LatLngBounds; // 지리적 경계 (정치적 영역 등)
 }
 
-interface LatLng {
+export interface LatLng {
   lat: number;
   lng: number;
 }

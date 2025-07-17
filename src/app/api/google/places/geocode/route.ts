@@ -22,7 +22,9 @@ export async function GET(request: Request) {
 
   try {
     const data = await httpClient("google-map")
-      .url(`/geocode/json?address=${region}&language=ko&key=${GoogleApiKey}`)
+      .url(
+        `/geocode/json?components=locality:${region}&result_type=locality&location_type=GEOMETRIC_CENTER&language=ko&key=${GoogleApiKey}`
+      )
       .call<GeocodingResponse>();
 
     return NextResponse.json(data.results[0]);

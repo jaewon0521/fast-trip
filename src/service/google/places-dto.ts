@@ -5,7 +5,7 @@ export interface PlaceTextSearchResponse {
   status: PlaceApiStatus;
 }
 
-interface PlaceResult {
+export interface PlaceResult {
   business_status?: BusinessStatus; // 영업 상태 (예: OPERATIONAL)
   formatted_address: string; // 사람이 읽기 쉬운 주소
   geometry: Geometry; // 지리적 정보 (위치, 뷰포트 등)
