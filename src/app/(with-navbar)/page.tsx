@@ -1,5 +1,4 @@
 import { FeatureGrid } from "@/components/grid";
-import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
 export default async function Home() {
@@ -29,18 +28,27 @@ export default async function Home() {
           <h2 className="text-5xl font-extrabold bg-gradient-to-tr from-blue-500 to-violet-500 bg-clip-text text-transparent mb-4 leading-tight animate-pulse">
             당신의 여행을 빠르게 계획하세요!
           </h2>
-          <p className="text-gray-500">AI 여행 경로 추천 서비스는 나만의 여행을 더욱 특별하게 만들어 줍니다.</p>
-          <div className="mt-5">
-            <Button variant="brand" size="lg" asChild>
-              <Link href="/schedule/question">시작하기</Link>
-            </Button>
+          <p className="text-gray-500">
+            AI 여행 경로 추천 서비스는 나만의 여행을 더욱 특별하게 만들어
+            줍니다.
+          </p>
+          <div className="flex justify-center gap-8 mt-5">
+            <button className="btn btn-lg bg-blue-500 text-white rounded-2xl px-10 hover:bg-blue-600">
+              <Link href="/schedule/question">나만의 여행</Link>
+            </button>
+            <button className="btn btn-lg bg-green-500 text-white rounded-2xl px-10 hover:bg-green-600">
+              <Link href="/schedule/question">AI와 여행</Link>
+            </button>
           </div>
         </section>
         <section className="flex flex-col items-center">
           <h2 className="text-5xl font-extrabold bg-gradient-to-tr from-blue-500 to-violet-500 bg-clip-text text-transparent mb-4 leading-tight animate-pulse text-center">
             FAST TRIP 주요 기능 소개
           </h2>
-          <p className="text-gray-500">당신의 여행을 더욱 특별하게 만들어 줄 AI 기반 경로 추천 서비스를 만나보세요.</p>
+          <p className="text-gray-500">
+            당신의 여행을 더욱 특별하게 만들어 줄 AI 기반 경로 추천 서비스를
+            만나보세요.
+          </p>
           <FeatureGrid features={features} />
         </section>
       </div>

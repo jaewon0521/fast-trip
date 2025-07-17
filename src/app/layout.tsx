@@ -24,7 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko">
+    <html lang="ko" data-theme="pastel">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <header>
           <Navbar />

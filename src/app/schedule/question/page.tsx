@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { QuestionSection } from "@/components/question/question-section";
 import { useState } from "react";
 import Link from "next/link";
@@ -15,7 +14,7 @@ export default function QuestionPage() {
   };
 
   return (
-    <div className="max-w-[1200px] w-full max-w-md mx-auto py-10 px-5">
+    <div className="w-full max-w-md mx-auto py-10 px-5">
       <div className="flex flex-col items-center gap-2 mb-10">
         <h1 className="text-2xl font-bold max-sm:text-xl">
           ✈️ 여행하고 싶은 도시는 어디인가요?
@@ -44,15 +43,13 @@ export default function QuestionPage() {
           selectedContent={selectedContent}
         />
       </div>
-      <Link href={`/plan?city=${selectedContent}`}>
-        <Button
+      <Link href={`/plan?region=${encodeURIComponent(selectedContent)}`}>
+        <button
           disabled={disabled}
-          variant="brand"
-          size="lg"
-          className="w-full mt-10"
+          className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
         >
           다음
-        </Button>
+        </button>
       </Link>
     </div>
   );

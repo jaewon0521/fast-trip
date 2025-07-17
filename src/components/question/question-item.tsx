@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import clsx from "clsx";
 
 interface QuestionItemProps {
   content: string;
@@ -11,19 +11,21 @@ export function QuestionItem({
   selectedContent,
   onContentSelect,
 }: QuestionItemProps) {
+  const isSelected = selectedContent === content;
+
   return (
     <li key={content}>
       <div>
-        <Button
-          variant={selectedContent === content ? "default" : "outline"}
-          size="lg"
+        <button
           type="button"
-          className="w-full"
-          color="blue"
+          className={clsx("w-full btn btn-outline  text-sm", {
+            "border-gray-400 text-gray-600": !isSelected,
+            "bg-blue-500 border-blue-500 text-white": isSelected,
+          })}
           onClick={() => onContentSelect(content)}
         >
           <span>{content}</span>
-        </Button>
+        </button>
       </div>
     </li>
   );
