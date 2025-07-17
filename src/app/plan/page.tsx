@@ -1,65 +1,57 @@
-"use client";
+import React, { Suspense } from "react";
 
-import React, { useState } from "react";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
-import PlanSidebar from "@/components/planSiderbar";
+import { httpClient } from "@/lib/fetch";
+import { extractError } from "@/lib/error";
+import { PlaceTextSearchResponse } from "@/service/google/places-dto";
+import { GeocodingResult } from "@/service/google/geocode-dto";
+import TripPlanner from "@/components/plan/trip-planner";
 
-const containerStyle = {
-  width: "100%",
-  height: "100%",
-};
+interface PlanPageProps {
+  region: string;
+}
 
-const center = {
-  lat: 37.555946,
-  lng: 126.972317,
-};
+async function PlaceList({ region }: PlanPageProps) {
+  try {
+    const geocodeData = await httpClient()
+      .url(`/api/google/places/geocode?region=${region}`)
+      .next({ revalidate: 60 * 60 * 24 })
+      .call<GeocodingResult>();
 
-const options = {
-  minZoom: 4,
-  maxZoom: 18,
-  cameraControl: false,
-  zoomControl: false,
-  mapTypeControl: false,
-  streetViewControl: false,
-};
+    const location = geocodeData.geometry.location;
 
-export default function PlanPage() {
-  const { isLoaded, loadError } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!,
-    language: "ko",
-  });
-  const [places, setPlaces] = useState([]);
+    const placesData = await httpClient()
+      .url(
+        `/api/google/places/search?region=${region}&lat=${location.lat}&lng=${location.lng}`
+      )
+      .next({ revalidate: 60 * 60 * 24 })
+      .call<PlaceTextSearchResponse>();
 
-  const handleSearch = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const region = formData.get("region");
-    const response = await fetch(`/api/google/places/search?region=${region}`);
-    const data = await response.json();
+    return (
+      <TripPlanner
+        region={region}
+        places={placesData.results}
+        location={geocodeData.geometry.location}
+      />
+    );
+  } catch (e) {
+    const error = extractError(e);
 
-    setPlaces(data.results);
-    console.log(data);
-  };
+    return <div>{error.message}</div>;
+  }
+}
 
-  return isLoaded ? (
+export default async function PlanPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ region: string }>;
+}) {
+  const param = await searchParams;
+
+  return (
     <div className="flex h-full">
-      <form className="flex flex-col gap-2" method="GET" onSubmit={handleSearch}>
-        <button type="submit">검색</button>
-      </form>
-      <PlanSidebar places={places} />
-      <div className="duration-500 w-full">
-        <div className="h-full">
-          <div className="w-full h-full">
-            <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={16} options={options}>
-              {/* Child components, such as markers, info windows, etc. */}
-              <></>
-            </GoogleMap>
-          </div>
-        </div>
-      </div>
+      <Suspense fallback={<div>Loading...</div>}>
+        <PlaceList {...param} />
+      </Suspense>
     </div>
-  ) : (
-    <></>
   );
 }
