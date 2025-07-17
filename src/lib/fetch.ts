@@ -66,11 +66,11 @@ class ApiBuilder {
   }
 }
 
-type ApiBaseType = "server" | "google-map";
+type ApiBaseType = "fast-trip" | "google-map";
 
-export function httpClient(base: ApiBaseType = "server"): ApiBuilder {
+export function httpClient(base: ApiBaseType = "fast-trip"): ApiBuilder {
   const url =
-    base === "server"
+    base === "fast-trip"
       ? process.env.NEXT_PUBLIC_BASE_URL!
       : "https://maps.googleapis.com/maps/api";
 
