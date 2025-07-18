@@ -28,7 +28,7 @@ export default function PlaceItem({
             {place.name}
           </span>
           <span
-            className=" word-break-keep-all truncate max-w-full block"
+            className="block max-w-full text-xs text-gray-500 word-break-keep-all truncate"
             title={place.formatted_address}
           >
             {place.formatted_address}
