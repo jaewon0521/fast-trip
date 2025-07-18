@@ -1,7 +1,7 @@
 "use client";
 
 import { PlaceResult } from "@/service/google/places-dto";
-import PlaceList from "../place/place-list";
+import PlanSchedule from "./plan-schedule";
 
 interface PlanSidebarProps {
   region: string;
@@ -20,8 +20,9 @@ export default function PlanSidebar({ region, places }: PlanSidebarProps) {
         <div className="text-sm text-gray-600">장소 선택</div>
       </section>
       <nav className="flex-1 px-4 py-2">
-        <span>1일차</span>
-        <PlaceList places={places} />
+        <PlanSchedule defaultPlaces={places} title="1일차" day={1} />
+        <PlanSchedule defaultPlaces={places} title="2일차" day={2} />
+        <PlanSchedule defaultPlaces={places} title="3일차" day={3} />
       </nav>
     </aside>
   );
