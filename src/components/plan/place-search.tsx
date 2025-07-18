@@ -1,8 +1,13 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { PlaceResult } from "@/service/google/places-dto";
+import {
+  PlaceResult,
+  PlaceTextSearchResponse,
+} from "@/service/google/places-dto";
 import PlaceSearchResultItem from "./place-search-result-item";
+import { httpClient } from "@/lib/fetch";
+import { extractError } from "@/lib/error";
 
 interface PlaceSearchProps {
   selectPlace: PlaceResult[];
@@ -34,7 +39,17 @@ export default function PlaceSearch({
   };
 
   const handleSearch = async () => {
-    console.log("search");
+    try {
+      const response = await httpClient()
+        .url(`/api/google/places/find?region=${"후쿠오카"}&name=${searchQuery}`)
+        .call<PlaceTextSearchResponse>();
+
+      console.log(response);
+    } catch (e) {
+      const error = extractError(e);
+
+      console.log(error);
+    }
   };
 
   // ESC 키로 placeSearch 닫기
