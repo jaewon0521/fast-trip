@@ -30,3 +30,13 @@
     color: inherit;
   }
 }
+
+@theme {
+  --color-brand-100: #edf2fb;
+  --color-brand-200: #e2eafc;
+  --color-brand-300: #d7e3fc;
+  --color-brand-400: #ccdbfd;
+  --color-brand-500: #c1d3fe;
+  --color-brand-600: #b6ccfe;
+  --color-brand-700: #abc4ff;
+}
