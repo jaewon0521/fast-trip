@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import PlaceList from "../place/place-list";
 import PlaceSearch from "./place-search";
@@ -8,32 +10,24 @@ interface PlanScheduleProps {
   day: number;
   title: string;
   defaultPlaces: PlaceResult[];
+  selectedPlaces: PlaceResult[];
+  onTogglePlace: (day: number, place: PlaceResult) => void;
 }
 export default function PlanSchedule({
   day,
   title,
   defaultPlaces,
+  selectedPlaces,
+  onTogglePlace,
 }: PlanScheduleProps) {
-  const [selectPlace, setSelectPlace] = useState<PlaceResult[]>([]);
   const [searchOpen, setSearchOpen] = useState(false);
+
+  const togglePlaceSelect = (place: PlaceResult) => {
+    onTogglePlace(day, place);
+  };
 
   const toggleSearch = () => {
     setSearchOpen((prev) => !prev);
-  };
-
-  const handleSelectPlace = (place: PlaceResult) => {
-    // 중복인 place가 들어오면 제거
-    if (selectPlace.some((p) => p.place_id === place.place_id)) {
-      setSelectPlace((prev) =>
-        prev.filter((p) => p.place_id !== place.place_id)
-      );
-    } else {
-      setSelectPlace((prev) => [...prev, place]);
-    }
-  };
-
-  const handleDeletePlace = (place: PlaceResult) => {
-    setSelectPlace((prev) => prev.filter((p) => p.place_id !== place.place_id));
   };
 
   return (
@@ -48,14 +42,14 @@ export default function PlanSchedule({
         {/* 검색 오버레이 */}
         {searchOpen && (
           <PlaceSearch
-            selectPlace={selectPlace}
+            selectPlace={selectedPlaces}
             defaultPlaces={defaultPlaces}
             onClose={toggleSearch}
-            onSelectPlace={handleSelectPlace}
+            onSelectPlace={togglePlaceSelect}
           />
         )}
       </div>
-      <PlaceList places={selectPlace} onDeletePlace={handleDeletePlace} />
+      <PlaceList places={selectedPlaces} onDeletePlace={togglePlaceSelect} />
     </div>
   );
 }

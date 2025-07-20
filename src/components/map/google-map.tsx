@@ -2,6 +2,7 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import { GoogleMap, MarkerF, useJsApiLoader } from "@react-google-maps/api";
+import { PlaceResult } from "@/service/google/places-dto";
 
 interface GoogleMapComponentProps {
   center?: {
@@ -13,7 +14,7 @@ interface GoogleMapComponentProps {
   options?: google.maps.MapOptions;
   children?: React.ReactNode;
   className?: string;
-  markers: MarkerData[];
+  markers: PlaceResult[];
 }
 
 const defaultContainerStyle = {
@@ -35,14 +36,6 @@ const defaultOptions = {
   streetViewControl: false,
 };
 
-interface MarkerData {
-  id: string;
-  lat: number;
-  lng: number;
-  type: "restaurant" | "place"; // 장소 타입 구분
-  name: string;
-}
-
 export default function GoogleMapComponent({
   center = defaultCenter,
   zoom = 13,
@@ -62,10 +55,13 @@ export default function GoogleMapComponent({
   const onLoad = useCallback(
     function callback(mapInstance: google.maps.Map) {
       // 지도 초기 중심 설정
-      if (markers.length !== 0) {
+      if (markers.length > 0) {
         const bounds = new google.maps.LatLngBounds();
-        markers.forEach((marker) =>
-          bounds.extend({ lat: marker.lat, lng: marker.lng })
+        markers.forEach((place) =>
+          bounds.extend({
+            lat: place.geometry.location.lat,
+            lng: place.geometry.location.lng,
+          })
         );
         mapInstance.fitBounds(bounds); // 모든 마커가 보이도록 지도 줌/중심 조정
       }
@@ -115,8 +111,6 @@ export default function GoogleMapComponent({
     );
   }
 
-  console.log(center);
-
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}
@@ -127,18 +121,21 @@ export default function GoogleMapComponent({
       options={options}
     >
       {children}
-      {markers.map((marker, index) => (
+      {markers.map((place, index) => (
         <MarkerF
-          key={marker.id}
+          key={place.place_id}
+          position={{
+            lat: place.geometry.location.lat,
+            lng: place.geometry.location.lng,
+          }}
+          icon={getMarkerIcon(place.types[0] as "restaurant" | "place")}
           label={{
             text: (index + 1).toString(),
             color: "white",
             fontSize: "12px",
             fontWeight: "bold",
           }}
-          position={{ lat: marker.lat, lng: marker.lng }}
-          icon={getMarkerIcon(marker.type)} // 커스텀 아이콘 적용
-          title={marker.name} // 마우스 오버 시 표시될 이름
+          title={place.name}
           onClick={() => {
             // 여기에 마커 클릭 시 동작할 로직 추가 (예: 상세 정보 표시)
           }}

@@ -8,6 +8,7 @@ import {
 import PlaceSearchResultItem from "./place-search-result-item";
 import { httpClient } from "@/lib/fetch";
 import { extractError } from "@/lib/error";
+import { XIcon } from "lucide-react";
 
 interface PlaceSearchProps {
   selectPlace: PlaceResult[];
@@ -34,21 +35,31 @@ export default function PlaceSearch({
     }
   };
 
-  const handleSelectPlace = (place: PlaceResult) => {
-    onSelectPlace(place);
+  const handleChangeSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value === "") {
+      setSearchResults(defaultPlaces);
+    }
+    setSearchQuery(value);
   };
 
   const handleSearch = async () => {
     try {
+      setIsLoading(true);
       const response = await httpClient()
-        .url(`/api/google/places/find?region=${"후쿠오카"}&name=${searchQuery}`)
+        .url(
+          `/api/google/places/find?region=${"후쿠오카"}&search=${searchQuery}`
+        )
         .call<PlaceTextSearchResponse>();
 
-      console.log(response);
+      console.log(response.results);
+      setSearchResults(response.results);
     } catch (e) {
       const error = extractError(e);
-
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -68,15 +79,23 @@ export default function PlaceSearch({
     <>
       {/* 검색 컨테이너 */}
       <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 mt-2">
+        <div className="flex justify-end p-2 mb-2">
+          <button
+            onClick={onClose}
+            className="text-gray-500 hover:text-gray-700 cursor-pointer"
+          >
+            <XIcon className="w-4 h-4" />
+          </button>
+        </div>
         {/* 검색 입력 영역 */}
-        <div className="p-4 border-b border-gray-100">
+        <div className="p-4 pt-0 border-b border-gray-100">
           <div className="flex gap-2">
             <div className="flex-1 relative">
               <input
                 ref={searchInputRef}
                 type="text"
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleChangeSearchQuery}
                 onKeyDown={handleKeyPress}
                 placeholder="장소를 검색하세요"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
@@ -107,7 +126,7 @@ export default function PlaceSearch({
                 {searchResults.map((place, index) => (
                   <div
                     key={index}
-                    onClick={() => handleSelectPlace(place)}
+                    onClick={() => onSelectPlace(place)}
                     className="p-2 hover:bg-gray-50 rounded cursor-pointer transition-colors"
                   >
                     <PlaceSearchResultItem
@@ -131,11 +150,9 @@ export default function PlaceSearch({
         )}
 
         {/* 안내 메시지 */}
-        {!searchQuery && (
-          <div className="p-4 text-center text-gray-400 text-sm">
-            장소명을 입력하고 검색해보세요
-          </div>
-        )}
+        <div className="p-4 text-center text-gray-400 text-sm">
+          장소명을 입력하고 검색해보세요
+        </div>
       </div>
     </>
   );

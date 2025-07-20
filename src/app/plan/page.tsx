@@ -10,7 +10,7 @@ interface PlanPageProps {
   region: string;
 }
 
-async function PlaceList({ region }: PlanPageProps) {
+async function ServerTipPlan({ region }: PlanPageProps) {
   try {
     const geocodeData = await httpClient()
       .url(`/api/google/places/geocode?region=${region}`)
@@ -48,10 +48,8 @@ export default async function PlanPage({
   const param = await searchParams;
 
   return (
-    <div className="flex h-full">
       <Suspense fallback={<div>Loading...</div>}>
-        <PlaceList {...param} />
+        <ServerTipPlan {...param} />
       </Suspense>
-    </div>
   );
 }
