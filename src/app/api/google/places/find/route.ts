@@ -8,14 +8,13 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
 
   const region = searchParams.get("region");
-  const name = searchParams.get("name");
+  const search = searchParams.get("search");
+  const lat = searchParams.get("lat");
+  const lng = searchParams.get("lng");
 
   const GoogleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY;
-  const fields =
-    "place_id,name,formatted_address,geometry.location,rating,photos";
-  const language = "ko";
 
-  if (!name) {
+  if (!search) {
     return new NextResponseError().BadRequest("장소 이름을 입력해 주세요.");
   }
 
@@ -28,7 +27,14 @@ export async function GET(request: Request) {
       "Google API 키가 설정되지 않았습니다."
     );
   }
-  const query = `${name} ${region}`; // 모토무라 후쿠오카
+
+  // 호출 쿼리 파라미터 설정
+  const fields =
+    "place_id,name,formatted_address,geometry.location,rating,photos";
+  const language = "ko";
+  const query = `${search} ${region}`; // 모토무라 후쿠오카
+  const radius = 10000;
+
   try {
     const data = await httpClient("google-map")
       .url(
