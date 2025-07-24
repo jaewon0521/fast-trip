@@ -7,7 +7,7 @@ interface QuestionSectionProps {
   selectedContent: string;
 }
 
-export function QuestionSection({
+export function QuestionContent({
   title,
   contents,
   onContentSelect,

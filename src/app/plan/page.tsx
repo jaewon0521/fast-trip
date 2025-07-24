@@ -6,11 +6,17 @@ import { PlaceTextSearchResponse } from "@/service/google/places-dto";
 import { GeocodingResult } from "@/service/google/geocode-dto";
 import TripPlanner from "@/components/plan/trip-planner";
 
-interface PlanPageProps {
+interface PlanPageSearchParams {
   region: string;
+  startDate: string;
+  endDate: string;
 }
 
-async function ServerTipPlan({ region }: PlanPageProps) {
+async function ServerTipPlan({
+  region,
+  startDate,
+  endDate,
+}: PlanPageSearchParams) {
   try {
     const geocodeData = await httpClient()
       .url(`/api/google/places/geocode?region=${region}`)
@@ -31,6 +37,8 @@ async function ServerTipPlan({ region }: PlanPageProps) {
         region={region}
         places={placesData.results}
         location={geocodeData.geometry.location}
+        startDate={startDate}
+        endDate={endDate}
       />
     );
   } catch (e) {
@@ -43,13 +51,13 @@ async function ServerTipPlan({ region }: PlanPageProps) {
 export default async function PlanPage({
   searchParams,
 }: {
-  searchParams: Promise<{ region: string }>;
+  searchParams: Promise<PlanPageSearchParams>;
 }) {
   const param = await searchParams;
 
   return (
-      <Suspense fallback={<div>Loading...</div>}>
-        <ServerTipPlan {...param} />
-      </Suspense>
+    <Suspense fallback={<div>Loading...</div>}>
+      <ServerTipPlan {...param} />
+    </Suspense>
   );
 }
