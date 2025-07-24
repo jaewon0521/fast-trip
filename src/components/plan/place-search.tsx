@@ -77,7 +77,6 @@ export default function PlaceSearch({
 
   return (
     <>
-      {/* 검색 컨테이너 */}
       <div className="absolute top-full left-0 right-0 bg-white border border-gray-200 rounded-lg shadow-lg z-50 mt-2">
         <div className="flex justify-end p-2 mb-2">
           <button
@@ -87,7 +86,6 @@ export default function PlaceSearch({
             <XIcon className="w-4 h-4" />
           </button>
         </div>
-        {/* 검색 입력 영역 */}
         <div className="p-4 pt-0 border-b border-gray-100">
           <div className="flex gap-2">
             <div className="flex-1 relative">
@@ -115,7 +113,6 @@ export default function PlaceSearch({
             </button>
           </div>
         </div>
-        {/* 검색 결과 영역 */}
         {searchResults.length > 0 && (
           <div className="max-h-64 overflow-y-auto">
             <div className="p-2">
@@ -142,14 +139,12 @@ export default function PlaceSearch({
           </div>
         )}
 
-        {/* 검색 결과가 없을 때 */}
         {searchQuery && !isLoading && searchResults.length === 0 && (
           <div className="p-4 text-center text-gray-500">
             검색 결과가 없습니다.
           </div>
         )}
 
-        {/* 안내 메시지 */}
         <div className="p-4 text-center text-gray-400 text-sm">
           장소명을 입력하고 검색해보세요
         </div>
