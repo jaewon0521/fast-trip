@@ -1,7 +1,8 @@
 import { FeatureGrid } from "@/components/grid";
+
 import Link from "next/link";
 
-export default async function Home() {
+export default function Home() {
   const features = [
     {
       title: "✈️ 여행 계획",
