@@ -24,7 +24,10 @@ export default function PlaceItem({
       {/* 장소 정보 영역 */}
       <section className="w-[calc(100%-50px)] flex justify-between rounded-lg bg-white px-4 py-3 shadow-sm flex-1">
         <div className="w-[calc(100%-50px)] flex flex-col gap-1">
-          <span className="text-sm font-bold" title={place.name}>
+          <span
+            className="text-sm font-bold word-break-keep-all truncate"
+            title={place.name}
+          >
             {place.name}
           </span>
           <span
@@ -35,7 +38,7 @@ export default function PlaceItem({
           </span>
           <span
             className={cn(
-              "text-xs text-gray-500",
+              "text-xs",
               place.types[0] === "restaurant"
                 ? "text-pink-500"
                 : "text-blue-500"

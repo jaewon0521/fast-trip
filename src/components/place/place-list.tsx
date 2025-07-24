@@ -6,7 +6,10 @@ interface PlaceListProps {
   onDeletePlace: (place: PlaceResult) => void;
 }
 
-export default function PlaceList({ places, onDeletePlace }: PlaceListProps) {
+export default function PlaceList({
+  places,
+  onDeletePlace,
+}: PlaceListProps) {
   return (
     <ul className="space-y-4">
       {places.map((place, index) => (

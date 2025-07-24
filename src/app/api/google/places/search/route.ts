@@ -9,14 +9,7 @@ export async function GET(request: Request) {
   const region = searchParams.get("region");
   const lat = searchParams.get("lat");
   const lng = searchParams.get("lng");
-
-  //호출 쿼리 파라미터 설정
   const GoogleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY;
-  const fields =
-    "place_id,name,formatted_address,geometry.location,rating,photos";
-  const language = "ko";
-  const query = `${region} 주변 맛집 및 주변 명소`; // 후쿠오카 주변 맛집 및 주변 명소
-  const radius = 5000;
 
   if (!region) {
     return new NextResponseError().BadRequest("도시를 선택해 주세요.");
@@ -27,6 +20,13 @@ export async function GET(request: Request) {
       "Google API 키가 설정되지 않았습니다."
     );
   }
+
+  //호출 쿼리 파라미터 설정
+  const fields =
+    "place_id,name,formatted_address,geometry.location,rating,photos";
+  const language = "ko";
+  const query = `${region} 주변 맛집 및 주변 명소`; // 후쿠오카 주변 맛집 및 주변 명소
+  const radius = 10000;
 
   try {
     const data = await httpClient("google-map")
