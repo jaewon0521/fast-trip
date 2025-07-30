@@ -14,7 +14,7 @@ export function QuestionItem({
   const isSelected = selectedContent === content;
 
   return (
-    <li key={content}>
+    <li>
       <div>
         <button
           type="button"
