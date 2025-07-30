@@ -2,14 +2,13 @@ import { useState } from "react";
 import QuestionTemplate from "./question-template";
 import QuestionHeader from "./question-header";
 import { QuestionContent } from "./question-content";
-import Link from "next/link";
 
 interface QuestionCityProps {
   onNext: (city: string) => void;
 }
 
 export default function QuestionCity({ onNext }: QuestionCityProps) {
-  const [selectedContent, setSelectedContent] = useState<string>("");
+  const [selectedContent, setSelectedContent] = useState("");
 
   const handleContentSelect = (city: string) => {
     setSelectedContent(city);
