@@ -9,7 +9,11 @@ interface QuestionCityProps {
   stepTotal: number;
 }
 
-export default function QuestionCity({ onNext, stepCurrent, stepTotal }: QuestionCityProps) {
+export default function QuestionCity({
+  onNext,
+  stepCurrent,
+  stepTotal,
+}: QuestionCityProps) {
   const [selectedContent, setSelectedContent] = useState("");
 
   const handleContentSelect = (city: string) => {
@@ -52,7 +56,7 @@ export default function QuestionCity({ onNext, stepCurrent, stepTotal }: Questio
         <button
           onClick={() => onNext(selectedContent)}
           disabled={!selectedContent}
-          className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
+          className="w-full btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
         >
           다음
         </button>

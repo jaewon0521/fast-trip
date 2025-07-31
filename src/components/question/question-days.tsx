@@ -11,7 +11,11 @@ interface QuestionDaysProps {
   stepTotal: number;
 }
 
-export default function QuestionDays({ onNext, stepCurrent, stepTotal }: QuestionDaysProps) {
+export default function QuestionDays({
+  onNext,
+  stepCurrent,
+  stepTotal,
+}: QuestionDaysProps) {
   const [selectedRange, setSelectedRange] = useState<DateRange>();
 
   const handleSelectDate = (range: DateRange | undefined) => {
@@ -45,7 +49,7 @@ export default function QuestionDays({ onNext, stepCurrent, stepTotal }: Questio
             )
           }
           disabled={!selectedRange}
-          className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
+          className="w-full btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
         >
           다음
         </button>
@@ -53,4 +57,3 @@ export default function QuestionDays({ onNext, stepCurrent, stepTotal }: Questio
     />
   );
 }
-

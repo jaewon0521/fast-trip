@@ -41,7 +41,7 @@ export default function QuestionTravelType({
         <button
           onClick={() => onNext(selectedContent)}
           disabled={!selectedContent}
-          className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
+          className="w-full btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
         >
           다음
         </button>
