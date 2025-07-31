@@ -5,9 +5,11 @@ import { QuestionContent } from "./question-content";
 
 interface QuestionCityProps {
   onNext: (city: string) => void;
+  stepCurrent: number;
+  stepTotal: number;
 }
 
-export default function QuestionCity({ onNext }: QuestionCityProps) {
+export default function QuestionCity({ onNext, stepCurrent, stepTotal }: QuestionCityProps) {
   const [selectedContent, setSelectedContent] = useState("");
 
   const handleContentSelect = (city: string) => {
@@ -20,6 +22,8 @@ export default function QuestionCity({ onNext }: QuestionCityProps) {
         <QuestionHeader
           title="✈️ 여행하고 싶은 도시는 어디인가요?"
           description="1개의 도시를 선택해주세요."
+          stepCurrent={stepCurrent}
+          stepTotal={stepTotal}
         />
       }
       body={

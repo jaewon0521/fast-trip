@@ -5,9 +5,11 @@ import QuestionTemplate from "./question-template";
 
 interface QuestionCompanionProps {
   onNext: (companion: string) => void;
+  stepCurrent: number;
+  stepTotal: number;
 }
 
-export default function QuestionCompanion({ onNext }: QuestionCompanionProps) {
+export default function QuestionCompanion({ onNext, stepCurrent, stepTotal }: QuestionCompanionProps) {
   const [selectedContent, setSelectedContent] = useState("");
 
   const handleContentSelect = (companion: string) => {
@@ -19,6 +21,8 @@ export default function QuestionCompanion({ onNext }: QuestionCompanionProps) {
         <QuestionHeader
           title="여행 동행자는 누구인가요?"
           description="동행자를 1개만 선택해주세요."
+          stepCurrent={stepCurrent}
+          stepTotal={stepTotal}
         />
       }
       body={

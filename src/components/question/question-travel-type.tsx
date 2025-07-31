@@ -5,10 +5,14 @@ import { QuestionContent } from "./question-content";
 
 interface QuestionTravelTypeProps {
   onNext: (type: string) => void;
+  stepCurrent: number;
+  stepTotal: number;
 }
 
 export default function QuestionTravelType({
   onNext,
+  stepCurrent,
+  stepTotal,
 }: QuestionTravelTypeProps) {
   const [selectedContent, setSelectedContent] = useState("");
 
@@ -21,6 +25,8 @@ export default function QuestionTravelType({
         <QuestionHeader
           title="여행 스타일은 무엇인가요?"
           description="여행 스타일을 1개만 선택해주세요."
+          stepCurrent={stepCurrent}
+          stepTotal={stepTotal}
         />
       }
       body={

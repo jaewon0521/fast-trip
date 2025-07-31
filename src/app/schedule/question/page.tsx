@@ -5,7 +5,7 @@ import QuestionDays from "@/components/question/question-days";
 import { useFunnel } from "@use-funnel/browser";
 import { useRouter } from "next/navigation";
 
-type CityPlanStep = {
+export type CityPlanStep = {
   region?: string;
 };
 
@@ -13,21 +13,6 @@ export type DaysPlanStep = {
   region: string;
   startDate?: string;
   endDate?: string;
-};
-
-type CompanionPlanStep = {
-  region: string;
-  startDate: string;
-  endDate: string;
-  who: string;
-};
-
-type TravelTypePlanStep = {
-  region: string;
-  startDate: string;
-  endDate: string;
-  who: string;
-  type?: string;
 };
 
 export default function QuestionPage() {
@@ -43,11 +28,16 @@ export default function QuestionPage() {
   });
   const router = useRouter();
 
+  const stepCurrent = Funnel.index + 1;
+  const stepTotal = 2;
+
   return (
     <Funnel.Render
       CityStep={({ history }) => (
         <QuestionCity
           onNext={(city: string) => history.push("DaysStep", { region: city })}
+          stepCurrent={stepCurrent}
+          stepTotal={stepTotal}
         />
       )}
       DaysStep={({ context }) => (
@@ -57,6 +47,8 @@ export default function QuestionPage() {
               `/plan?region=${context.region}&startDate=${startDate}&endDate=${endDate}`
             )
           }
+          stepCurrent={stepCurrent}
+          stepTotal={stepTotal}
         />
       )}
     />
