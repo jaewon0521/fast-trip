@@ -79,7 +79,11 @@ export default function SuggestPage() {
       )}
       TravelTypeStep={({ context, history }) => (
         <QuestionTravelType
-          onNext={(type) => router.push(``)}
+          onNext={(type) =>
+            router.push(
+              `/plan/suggest?region=${context.region}&startDate=${context.startDate}&endDate=${context.endDate}&who=${context.who}&type=${type}`
+            )
+          }
           stepCurrent={stepCurrent}
           stepTotal={stepTotal}
         />
