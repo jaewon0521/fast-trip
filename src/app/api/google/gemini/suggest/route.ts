@@ -22,7 +22,7 @@ export async function POST(request: Request) {
     const model = genAI.getGenerativeModel({
       model: "gemini-2.5-flash-lite",
       generationConfig: {
-        temperature: 0.8,
+        temperature: 0.4,
         maxOutputTokens: 8192,
         responseMimeType: "application/json",
         responseSchema: {
@@ -56,8 +56,46 @@ export async function POST(request: Request) {
       },
     });
 
-    const prompt = `너는 전문 여행 플래너야. ${startDate}부터 ${endDate}까지 ${who}와 함께 ${region}를 여행할 계획이야. ${type} 여행을 선호하고, 대중교통을 주로 이용할 예정이야. 하루 여행 추천지는 최소 6개 부터 최대 10개야. 중간 점심과 저녁에 들려야 하는 맛집도 추천 해줘야돼. 다음 JSON 형식으로 각 날짜별 여행 일정을 추천해줘. 각 장소(place)는 'name', 'description', 'address', 'types', 'geometry' 키를 포함해야 해 'places/search' API에서 사용 가능한 형식이어야 해. 
-    `;
+    const prompt = `당신은 ${region} 지역 전문 여행 플래너입니다.
+
+                    **여행 정보:**
+                    - 기간: ${startDate} ~ ${endDate}
+                    - 동행자: ${who}  
+                    - 지역: ${region}
+                    - 여행 스타일: ${type}
+
+                    **중요: 좌표 정확도 요구사항**
+                    - 모든 장소의 위도/경도는 실제 Google Maps에서 확인 가능한 정확한 좌표여야 합니다
+                    - 좌표는 소수점 6자리까지 정확히 제공해주세요 (예: 37.566535, 126.977969)
+                    - 존재하지 않는 장소나 추정 좌표는 절대 사용하지 마세요
+                    - 유명한 랜드마크나 대형 건물의 정확한 좌표를 사용해주세요
+
+                    **핵심 요구사항 (반드시 준수):**
+                    1. **일정 구성**: 매일 정확히 6개 ~ 10개 장소 추천 (필수)
+                    2. **식사 계획**: 매일 점심 식당 1곳, 저녁 식당 1곳 반드시 포함 (필수)
+                    3. **여행 스타일**: 전체 장소의 70% 이상을 ${type} 스타일에 맞게 구성
+                    4. **교통**: 대중교통 이용 기준 동선 최적화
+                    5. **시간 배분**: 오전(09:00-12:00), 점심(12:00-14:00), 오후(14:00-18:00), 저녁(18:00-21:00)
+
+                    **응답 형식 지침:**
+                    - 각 장소는 Google Places API 형식에 맞춰 실제 존재하는 장소만 추천
+                    - place_id는 실제 Google Places의 place_id 형식으로 제공 (예: ChIJ...)
+                    - formatted_address는 정확한 주소 형식으로 제공
+                    - types는 Google Places API의 표준 타입 사용 (예: ["restaurant", "food", "establishment"])
+                    - 좌표는 실제 위도/경도 값으로 제공
+
+                    **품질 체크리스트:**
+                    응답하기 전 다음을 반드시 확인하세요:
+                    □ 각 날짜마다 6-10개 장소 포함
+                    □ 각 날짜마다 점심 식당(restaurant 타입) 1개 이상
+                    □ 각 날짜마다 저녁 식당(restaurant 타입) 1개 이상  
+                    □ ${type} 스타일 장소가 70% 이상
+                    □ 모든 장소가 실제 존재하는 곳
+                    □ 올바른 JSON 배열 형식
+
+                    **중요:** 위 요구사항을 모두 만족하지 않으면 응답을 다시 작성해주세요.
+
+                    지금 ${region}의 ${type} 여행 일정을 작성해주세요.`;
 
     const response = await model.generateContent(prompt);
     const data = await response.response.text();
