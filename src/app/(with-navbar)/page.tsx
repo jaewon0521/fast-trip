@@ -38,7 +38,7 @@ export default function Home() {
               <Link href="/schedule/question">나만의 여행</Link>
             </button>
             <button className="btn btn-lg bg-green-500 text-white rounded-2xl px-10 hover:bg-green-600">
-              <Link href="/schedule/question">AI와 여행</Link>
+              <Link href="/schedule/suggest">AI와 여행</Link>
             </button>
           </div>
         </section>

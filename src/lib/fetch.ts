@@ -72,7 +72,7 @@ export function httpClient(base: ApiBaseType = "fast-trip"): ApiBuilder {
   const url =
     base === "fast-trip"
       ? process.env.NEXT_PUBLIC_BASE_URL!
-      : "https://maps.googleapis.com/maps/api";
+      : process.env.NEXT_PUBLIC_GOOGLE_API_URL!;
 
   return new ApiBuilder(url);
 }

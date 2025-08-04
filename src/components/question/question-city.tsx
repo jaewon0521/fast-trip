@@ -2,14 +2,19 @@ import { useState } from "react";
 import QuestionTemplate from "./question-template";
 import QuestionHeader from "./question-header";
 import { QuestionContent } from "./question-content";
-import Link from "next/link";
 
 interface QuestionCityProps {
   onNext: (city: string) => void;
+  stepCurrent: number;
+  stepTotal: number;
 }
 
-export default function QuestionCity({ onNext }: QuestionCityProps) {
-  const [selectedContent, setSelectedContent] = useState<string>("");
+export default function QuestionCity({
+  onNext,
+  stepCurrent,
+  stepTotal,
+}: QuestionCityProps) {
+  const [selectedContent, setSelectedContent] = useState("");
 
   const handleContentSelect = (city: string) => {
     setSelectedContent(city);
@@ -21,6 +26,8 @@ export default function QuestionCity({ onNext }: QuestionCityProps) {
         <QuestionHeader
           title="✈️ 여행하고 싶은 도시는 어디인가요?"
           description="1개의 도시를 선택해주세요."
+          stepCurrent={stepCurrent}
+          stepTotal={stepTotal}
         />
       }
       body={
@@ -49,7 +56,7 @@ export default function QuestionCity({ onNext }: QuestionCityProps) {
         <button
           onClick={() => onNext(selectedContent)}
           disabled={!selectedContent}
-          className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
+          className="w-full btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
         >
           다음
         </button>

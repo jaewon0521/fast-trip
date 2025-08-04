@@ -12,7 +12,7 @@ interface PlanPageSearchParams {
   endDate: string;
 }
 
-async function ServerTipPlan({
+async function ServerTripPlan({
   region,
   startDate,
   endDate,
@@ -36,7 +36,7 @@ async function ServerTipPlan({
       <TripPlanner
         region={region}
         places={placesData.results}
-        location={geocodeData.geometry.location}
+        location={location}
         startDate={startDate}
         endDate={endDate}
       />
@@ -57,7 +57,7 @@ export default async function PlanPage({
 
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <ServerTipPlan {...param} />
+      <ServerTripPlan {...param} />
     </Suspense>
   );
 }

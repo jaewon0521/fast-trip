@@ -97,7 +97,7 @@ export default function GoogleMapComponent({
       {Object.entries(markers).map(([dayIndex, dayMarkers]) => (
         <Fragment key={`${dayIndex}-1일차`}>
           {dayMarkers?.map((markerData: PlaceResult, index: number) => (
-            <Fragment key={markerData.place_id}>
+            <Fragment key={`${markerData.place_id}-${index}`}>
               <MarkerF
                 position={{
                   lat: markerData.geometry.location.lat,

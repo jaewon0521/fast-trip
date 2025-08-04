@@ -12,8 +12,9 @@ import { extractError } from "@/lib/error";
 import GoogleMapComponent from "../map/google-map";
 
 interface TripPlannerProps {
+  defaultMarkers?: MarkersByDay;
   region: string;
-  places: PlaceResult[];
+  places?: PlaceResult[];
   location: LatLng;
   startDate: string;
   endDate: string;
@@ -24,16 +25,17 @@ export interface MarkersByDay {
 }
 
 export default function TripPlanner({
+  defaultMarkers,
   region,
-  places,
+  places = [],
   location,
   startDate,
   endDate,
 }: TripPlannerProps) {
-  const [markers, setMarkers] = useState<MarkersByDay>({});
-  const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  
   const daysCount = differenceInDays(new Date(endDate), new Date(startDate));
+  const [markers, setMarkers] = useState<MarkersByDay>(defaultMarkers || {});
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+
   const daysText =
     daysCount === 0 ? "당일치기" : `${daysCount}박 ${daysCount + 1}일`;
   const renderMarker =

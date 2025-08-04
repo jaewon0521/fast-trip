@@ -7,9 +7,15 @@ import { formattedDate } from "@/utils/date";
 
 interface QuestionDaysProps {
   onNext: (startDate: string, endDate: string) => void;
+  stepCurrent: number;
+  stepTotal: number;
 }
 
-export default function QuestionDays({ onNext }: QuestionDaysProps) {
+export default function QuestionDays({
+  onNext,
+  stepCurrent,
+  stepTotal,
+}: QuestionDaysProps) {
   const [selectedRange, setSelectedRange] = useState<DateRange>();
 
   const handleSelectDate = (range: DateRange | undefined) => {
@@ -22,6 +28,8 @@ export default function QuestionDays({ onNext }: QuestionDaysProps) {
         <QuestionHeader
           title="🗓️ 여행 기간을 선택해주세요."
           description="최대 10일 선택 가능해요."
+          stepCurrent={stepCurrent}
+          stepTotal={stepTotal}
         />
       }
       body={
@@ -41,7 +49,7 @@ export default function QuestionDays({ onNext }: QuestionDaysProps) {
             )
           }
           disabled={!selectedRange}
-          className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
+          className="w-full btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
         >
           다음
         </button>
@@ -49,4 +57,3 @@ export default function QuestionDays({ onNext }: QuestionDaysProps) {
     />
   );
 }
-
