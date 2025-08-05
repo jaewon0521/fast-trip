@@ -3,7 +3,6 @@ import { extractError } from "@/lib/error";
 import { httpClient } from "@/lib/fetch";
 import { GeocodingResult } from "@/service/google/geocode-dto";
 import { PlaceResult } from "@/service/google/places-dto";
-import { Suspense } from "react";
 
 interface SuggestPagesSearchParams {
   region: string;
@@ -68,9 +67,5 @@ export default async function SuggestPage({
   searchParams: Promise<SuggestPagesSearchParams>;
 }) {
   const param = await searchParams;
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ServerSuggestTripPlan {...param} />
-    </Suspense>
-  );
+  return <ServerSuggestTripPlan {...param} />;
 }

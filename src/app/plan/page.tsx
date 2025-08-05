@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React from "react";
 
 import { httpClient } from "@/lib/fetch";
 import { extractError } from "@/lib/error";
@@ -55,9 +55,5 @@ export default async function PlanPage({
 }) {
   const param = await searchParams;
 
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ServerTripPlan {...param} />
-    </Suspense>
-  );
+  return <ServerTripPlan {...param} />;
 }
