@@ -1,7 +1,6 @@
-import { ErrorResponse, ErrorCode } from "./types/error-types";
+import { ErrorResponse } from "./types/error-types";
 
 // API 호출 시에 에러 처리를 위한 클래스 입니다.
-
 class FetchError extends Error {
   constructor(public response: Response, public data: ErrorResponse) {
     super(`Fetch failed with status ${data?.status ?? 500}`);
@@ -37,7 +36,7 @@ export function extractError(e: any): ErrorResponse {
   }
 
   return {
-    status: 500,
+    status: e?.status ?? 500,
     message: e?.message ?? "Unknown Error",
     error: e?.error ?? "INTERNAL_ERROR",
   };
