@@ -44,14 +44,14 @@ export const savePlan = async (
     end_at: string;
   }
 ) => {
+  const supabase = await createClientByServer();
+  const user = await getUser();
+
+  if (!user) {
+    return redirect(PATH.HOME);
+  }
+
   try {
-    const supabase = await createClientByServer();
-    const user = await getUser();
-
-    if (!user) {
-      return redirect(PATH.HOME);
-    }
-
     const { data, error } = await supabase.from("plan").insert({
       userId: user.id,
       region: body.region,
@@ -63,36 +63,36 @@ export const savePlan = async (
     if (error) {
       throw new Error(error.message);
     }
-
-    return {
-      success: true,
-      message: "여행 계획이 저장되었습니다.",
-    };
   } catch (e) {
     const error = extractError(e);
-
-    return error;
+    return {
+      success: false,
+      message: error.message,
+    };
   }
+
+  revalidatePath(PATH.MY_PLAN);
+  redirect(PATH.MY_PLAN);
 };
 
 /**
  * 여행 계획 삭제
  */
 export const deletePlan = async (_: unknown, formData: FormData) => {
-  try {
-    const id = formData.get("id");
-    const supabase = await createClientByServer();
-    const user = await getUser();
+  const id = formData.get("id");
+  const supabase = await createClientByServer();
+  const user = await getUser();
 
+  if (!user) {
+    redirect(PATH.HOME);
+  }
+
+  try {
     if (!id) {
       return {
         error: true,
         message: "여행 계획 삭제에 실패했습니다.",
       };
-    }
-
-    if (!user) {
-      redirect(PATH.HOME);
     }
 
     const { data, error } = await supabase
@@ -114,6 +114,9 @@ export const deletePlan = async (_: unknown, formData: FormData) => {
   } catch (e) {
     const error = extractError(e);
 
-    return error;
+    return {
+      success: false,
+      message: error.message,
+    };
   }
 };
