@@ -2,14 +2,19 @@
 
 import PlanSidebar from "@/components/plan/plan-sidebar";
 import { PlaceResult } from "@/service/google/places-dto";
-import { useState } from "react";
+import {
+  startTransition,
+  useActionState,
+  useState,
+  useTransition,
+} from "react";
 import { LatLng } from "@/service/google/geocode-dto";
 import PlanInfo from "./plan-info";
-import { addDays, differenceInDays } from "date-fns";
-import { httpClient } from "@/lib/fetch";
+import { differenceInDays } from "date-fns";
 import toast from "react-hot-toast";
 import { extractError } from "@/lib/error";
 import GoogleMapComponent from "../map/google-map";
+import { savePlan } from "@/action/plan/api";
 
 interface TripPlannerProps {
   defaultMarkers?: MarkersByDay;
@@ -35,6 +40,8 @@ export default function TripPlanner({
   const daysCount = differenceInDays(new Date(endDate), new Date(startDate));
   const [markers, setMarkers] = useState<MarkersByDay>(defaultMarkers || {});
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
+  const [state, submit] = useActionState(savePlan, undefined);
+  const [pending, startTransition] = useTransition();
 
   const daysText =
     daysCount === 0 ? "당일치기" : `${daysCount}박 ${daysCount + 1}일`;
@@ -66,27 +73,21 @@ export default function TripPlanner({
     setSelectedDay(day);
   };
 
-  const onSubmit = async () => {
-    const plan = {
-      places: JSON.stringify(markers),
-      region,
-      start_at: startDate,
-      end_at: endDate,
-    };
+  const onSubmit = () => {
+    startTransition(() => {
+      submit({
+        places: markers,
+        region,
+        start_at: startDate,
+        end_at: endDate,
+      });
 
-    try {
-      const res = await httpClient()
-        .url("/api/plan")
-        .method("POST")
-        .body(plan)
-        .call();
-
-      toast.success("여행 계획이 저장되었습니다.");
-    } catch (e) {
-      const error = extractError(e);
-
-      toast.error(error.message);
-    }
+      if (state && state.success) {
+        toast.success(state.message);
+      } else if (state && !state.success) {
+        toast.error(state.message);
+      }
+    });
   };
 
   return (
@@ -106,9 +107,11 @@ export default function TripPlanner({
           selectedDay={selectedDay}
           onSelectedDay={handleSelectDay}
         />
+
         <div className="p-4">
           <button
             className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
+            disabled={pending}
             onClick={onSubmit}
           >
             저장

@@ -37,7 +37,7 @@ class ApiBuilder {
     return this;
   }
 
-  public credentials(credentials: boolean) {
+  public credentials(credentials: boolean = true) {
     this.options.credentials = credentials ? "include" : "omit";
     return this;
   }

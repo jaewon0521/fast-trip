@@ -53,7 +53,6 @@ export default function PlaceSearch({
         )
         .call<PlaceTextSearchResponse>();
 
-      console.log(response.results);
       setSearchResults(response.results);
     } catch (e) {
       const error = extractError(e);
