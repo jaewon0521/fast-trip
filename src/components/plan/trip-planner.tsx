@@ -2,7 +2,12 @@
 
 import PlanSidebar from "@/components/plan/plan-sidebar";
 import { PlaceResult } from "@/service/google/places-dto";
-import { useActionState, useState } from "react";
+import {
+  startTransition,
+  useActionState,
+  useState,
+  useTransition,
+} from "react";
 import { LatLng } from "@/service/google/geocode-dto";
 import PlanInfo from "./plan-info";
 import { differenceInDays } from "date-fns";
@@ -35,7 +40,8 @@ export default function TripPlanner({
   const daysCount = differenceInDays(new Date(endDate), new Date(startDate));
   const [markers, setMarkers] = useState<MarkersByDay>(defaultMarkers || {});
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [state, submit, pending] = useActionState(savePlan, undefined);
+  const [state, submit] = useActionState(savePlan, undefined);
+  const [pending, startTransition] = useTransition();
 
   const daysText =
     daysCount === 0 ? "당일치기" : `${daysCount}박 ${daysCount + 1}일`;
@@ -67,8 +73,8 @@ export default function TripPlanner({
     setSelectedDay(day);
   };
 
-  const onSubmit = async () => {
-    try {
+  const onSubmit = () => {
+    startTransition(() => {
       submit({
         places: markers,
         region,
@@ -78,12 +84,10 @@ export default function TripPlanner({
 
       if (state && state.success) {
         toast.success(state.message);
+      } else if (state && !state.success) {
+        toast.error(state.message);
       }
-    } catch (e) {
-      const error = extractError(e);
-
-      toast.error(error.message);
-    }
+    });
   };
 
   return (
@@ -103,6 +107,7 @@ export default function TripPlanner({
           selectedDay={selectedDay}
           onSelectedDay={handleSelectDay}
         />
+
         <div className="p-4">
           <button
             className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
