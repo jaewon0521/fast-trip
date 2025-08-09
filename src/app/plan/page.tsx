@@ -4,7 +4,7 @@ import { httpClient } from "@/lib/fetch";
 import { extractError } from "@/lib/error";
 import { PlaceTextSearchResponse } from "@/service/google/places-dto";
 import { GeocodingResult } from "@/service/google/geocode-dto";
-import TripPlanner from "@/components/plan/trip-planner";
+import TripEditor from "@/components/trip/trip-editor";
 
 interface PlanPageSearchParams {
   region: string;
@@ -33,7 +33,7 @@ async function ServerTripPlan({
       .call<PlaceTextSearchResponse>();
 
     return (
-      <TripPlanner
+      <TripEditor
         region={region}
         places={placesData.results}
         location={location}

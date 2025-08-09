@@ -6,14 +6,17 @@ interface PlaceListProps {
   onDeletePlace: (place: PlaceResult) => void;
 }
 
-export default function PlaceList({ places, onDeletePlace }: PlaceListProps) {
+export default function PlaceList({
+  places,
+  onDeletePlace,
+}: PlaceListProps) {
   return (
     <ul className="space-y-4">
-      {places.map((place, index) => (
+      {places.map((place) => (
         <PlaceItem
-          key={`${place.place_id}-${index}`}
+          key={place.place_id}
           place={place}
-          number={index + 1}
+          number={places.indexOf(place) + 1}
           onDeletePlace={onDeletePlace}
         />
       ))}

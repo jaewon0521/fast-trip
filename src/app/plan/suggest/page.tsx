@@ -1,4 +1,5 @@
-import TripPlanner, { MarkersByDay } from "@/components/plan/trip-planner";
+import TripEditor from "@/components/trip/trip-editor";
+import { MarkersByDay } from "@/components/trip/type";
 import { extractError } from "@/lib/error";
 import { httpClient } from "@/lib/fetch";
 import { GeocodingResult } from "@/service/google/geocode-dto";
@@ -46,7 +47,7 @@ async function ServerSuggestTripPlan({
     }, {} as MarkersByDay);
 
     return (
-      <TripPlanner
+      <TripEditor
         defaultMarkers={markers}
         region={region}
         location={location}

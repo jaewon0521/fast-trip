@@ -1,7 +1,6 @@
 "use server";
 
 import { getPlan } from "@/action/plan/api";
-import { MarkersByDay } from "@/components/plan/trip-planner";
 import UserPlan from "@/components/user/plan";
 import { extractError } from "@/lib/error";
 import { ParsePlanDto } from "@/service/plan/dto";

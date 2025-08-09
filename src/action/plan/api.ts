@@ -1,6 +1,6 @@
 "use server";
 
-import { MarkersByDay } from "@/components/plan/trip-planner";
+import { MarkersByDay } from "@/components/trip/type";
 import { PATH } from "@/constants/path";
 import { extractError } from "@/lib/error";
 import { PlanDto } from "@/service/plan/dto";
@@ -33,10 +33,27 @@ export const getPlan = async (): Promise<PlanDto[]> => {
 };
 
 /**
+ * 여행 계획 상세 조회
+ */
+export const getPlanDetail = async (id: string): Promise<PlanDto> => {
+  const supabase = await createClientByServer();
+
+  const { data, error } = await supabase
+    .from("plan")
+    .select("*")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data;
+};
+
+/**
  * 여행 계획 저장
  */
 export const savePlan = async (
-  _: unknown,
   body: {
     region: string;
     places: MarkersByDay;
@@ -63,16 +80,19 @@ export const savePlan = async (
     if (error) {
       throw new Error(error.message);
     }
+
+    return {
+      success: true,
+      message: "여행 계획이 저장되었습니다.",
+    };
   } catch (e) {
     const error = extractError(e);
+    console.log(error);
     return {
       success: false,
       message: error.message,
     };
   }
-
-  revalidatePath(PATH.MY_PLAN);
-  redirect(PATH.MY_PLAN);
 };
 
 /**

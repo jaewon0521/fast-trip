@@ -11,6 +11,7 @@ import { extractError } from "@/lib/error";
 import { XIcon } from "lucide-react";
 
 interface PlaceSearchProps {
+  region: string;
   selectPlace: PlaceResult[];
   defaultPlaces: PlaceResult[];
   onClose: () => void;
@@ -18,6 +19,7 @@ interface PlaceSearchProps {
 }
 
 export default function PlaceSearch({
+  region,
   selectPlace,
   defaultPlaces,
   onClose,
@@ -48,9 +50,7 @@ export default function PlaceSearch({
     try {
       setIsLoading(true);
       const response = await httpClient()
-        .url(
-          `/api/google/places/find?region=${"후쿠오카"}&search=${searchQuery}`
-        )
+        .url(`/api/google/places/find?region=${region}&search=${searchQuery}`)
         .call<PlaceTextSearchResponse>();
 
       setSearchResults(response.results);

@@ -21,7 +21,14 @@ export default function DeletePlan({ id }: DeletePlanProps) {
   return (
     <form action={formAction}>
       <input type="hidden" name="id" value={id} />
-      <button type="submit" className="cursor-pointer" disabled={pending}>
+      <button
+        type="submit"
+        className="cursor-pointer"
+        disabled={pending}
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+      >
         <Trash2 size={18} />
       </button>
     </form>
