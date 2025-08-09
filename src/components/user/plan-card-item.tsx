@@ -19,14 +19,15 @@ interface PlanCardItemProps {
 export default function PlanCardItem({ plan }: PlanCardItemProps) {
   const router = useRouter();
 
-  const handleClick = () => {
-    router.push(`${PATH.MY_PLAN}/${plan.id}`);
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    router.push(`${PATH.TRIP}/${plan.id}`);
   };
 
   return (
     <div className="relative h-[250px] border border-gray-200 rounded-xl overflow-hidden">
       <div className="w-full h-full cursor-pointer" onClick={handleClick}>
-        <div className="">
+        <div>
           <Image
             src={thumbnailImage[plan.region as keyof typeof thumbnailImage]}
             alt={plan.region}
@@ -54,7 +55,7 @@ export default function PlanCardItem({ plan }: PlanCardItemProps) {
               </div>
             </div>
             <div className="absolute top-0 right-0 p-4">
-              <div className="hidden text-red-400 cursor-pointer hover:text-red-500 transition-all duration-300 active:scale-110 group-hover:block ">
+              <div className="hidden text-red-400 cursor-pointer hover:text-red-500 transition-all duration-300 active:scale-110 group-hover:block">
                 <DeletePlan id={plan.id} />
               </div>
             </div>
