@@ -9,6 +9,7 @@ import SearchButton from "./plan-search-button";
 interface PlanScheduleProps {
   day: number;
   title: string;
+  region: string;
   defaultPlaces: PlaceResult[];
   selectedPlaces: PlaceResult[];
   onTogglePlace: (day: number, place: PlaceResult) => void;
@@ -16,6 +17,7 @@ interface PlanScheduleProps {
 
 export default function PlanSchedule({
   day,
+  region,
   title,
   defaultPlaces,
   selectedPlaces,
@@ -42,6 +44,7 @@ export default function PlanSchedule({
         </SearchButton>
         {searchOpen && (
           <PlaceSearch
+            region={region}
             selectPlace={selectedPlaces}
             defaultPlaces={defaultPlaces}
             onClose={toggleSearch}

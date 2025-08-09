@@ -5,7 +5,7 @@ import { Trash2 } from "lucide-react";
 interface PlaceItemProps {
   place: PlaceResult;
   number: number;
-  onDeletePlace: (place: PlaceResult) => void;
+  onDeletePlace?: (place: PlaceResult) => void;
 }
 
 export default function PlaceItem({
@@ -13,6 +13,9 @@ export default function PlaceItem({
   number,
   onDeletePlace,
 }: PlaceItemProps) {
+  const firstType = place.types?.[0];
+  const typeLabel = firstType === "restaurant" ? "음식점" : "명소";
+
   return (
     <li className="flex items-center">
       <div className="flex flex-col items-center mr-4">
@@ -39,21 +42,21 @@ export default function PlaceItem({
           <span
             className={cn(
               "text-xs",
-              place.types[0] === "restaurant"
-                ? "text-pink-500"
-                : "text-blue-500"
+              firstType === "restaurant" ? "text-pink-500" : "text-blue-500"
             )}
           >
-            {place.types[0] === "restaurant" ? "음식점" : "명소"}
+            {typeLabel}
           </span>
         </div>
         <div>
-          <button
-            className="btn btn-sm btn-outline btn-circle btn-error h-full border-none rounded-md hover:bg-accent-focus"
-            onClick={() => onDeletePlace(place)}
-          >
-            <Trash2 size={16} />
-          </button>
+          {onDeletePlace && (
+            <button
+              className="btn btn-sm btn-outline btn-circle btn-error h-full border-none rounded-md hover:bg-accent-focus"
+              onClick={() => onDeletePlace(place)}
+            >
+              <Trash2 size={16} />
+            </button>
+          )}
         </div>
       </section>
     </li>

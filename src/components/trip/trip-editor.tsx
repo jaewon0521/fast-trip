@@ -2,21 +2,20 @@
 
 import PlanSidebar from "@/components/plan/plan-sidebar";
 import { PlaceResult } from "@/service/google/places-dto";
-import {
-  startTransition,
-  useActionState,
-  useState,
-  useTransition,
-} from "react";
+import { useState } from "react";
 import { LatLng } from "@/service/google/geocode-dto";
-import PlanInfo from "./plan-info";
 import { differenceInDays } from "date-fns";
 import toast from "react-hot-toast";
-import { extractError } from "@/lib/error";
 import GoogleMapComponent from "../map/google-map";
 import { savePlan } from "@/action/plan/api";
+import PlanInfo from "../plan/plan-info";
+import PlanDayFilterButtons from "../plan/plan-day-filter-button-list";
+import PlanScheduleList from "../plan/plan-shcedule-list";
+import { useRouter } from "next/navigation";
+import { PATH } from "@/constants/path";
+import { MarkersByDay } from "./type";
 
-interface TripPlannerProps {
+interface TripEditorProps {
   defaultMarkers?: MarkersByDay;
   region: string;
   places?: PlaceResult[];
@@ -25,26 +24,23 @@ interface TripPlannerProps {
   endDate: string;
 }
 
-export interface MarkersByDay {
-  [key: number]: PlaceResult[];
-}
-
-export default function TripPlanner({
+export default function TripEditor({
   defaultMarkers,
   region,
   places = [],
   location,
   startDate,
   endDate,
-}: TripPlannerProps) {
+}: TripEditorProps) {
   const daysCount = differenceInDays(new Date(endDate), new Date(startDate));
   const [markers, setMarkers] = useState<MarkersByDay>(defaultMarkers || {});
   const [selectedDay, setSelectedDay] = useState<number | null>(null);
-  const [state, submit] = useActionState(savePlan, undefined);
-  const [pending, startTransition] = useTransition();
+  const [isSaving, setIsSaving] = useState(false);
+  const router = useRouter();
 
   const daysText =
     daysCount === 0 ? "당일치기" : `${daysCount}박 ${daysCount + 1}일`;
+
   const renderMarker =
     selectedDay !== null
       ? { [selectedDay]: markers[selectedDay] ?? [] }
@@ -54,17 +50,12 @@ export default function TripPlanner({
     setMarkers((prev) => {
       const newMarkers = { ...prev };
       const dayPlaces = newMarkers[day] || [];
-      const placeIndex = dayPlaces.findIndex(
-        (p) => p.place_id === place.place_id
-      );
+      const exists = dayPlaces.some((p) => p.place_id === place.place_id);
 
-      if (placeIndex > -1) {
-        // 삭제
-        newMarkers[day] = dayPlaces.filter((_, index) => index !== placeIndex);
-      } else {
-        // 추가
-        newMarkers[day] = [...dayPlaces, place];
-      }
+      newMarkers[day] = exists
+        ? dayPlaces.filter((p) => p.place_id !== place.place_id)
+        : [...dayPlaces, place];
+
       return newMarkers;
     });
   };
@@ -73,21 +64,26 @@ export default function TripPlanner({
     setSelectedDay(day);
   };
 
-  const onSubmit = () => {
-    startTransition(() => {
-      submit({
+  const onSubmit = async () => {
+    if (isSaving) return;
+    setIsSaving(true);
+    try {
+      const res = await savePlan({
         places: markers,
         region,
         start_at: startDate,
         end_at: endDate,
       });
 
-      if (state && state.success) {
-        toast.success(state.message);
-      } else if (state && !state.success) {
-        toast.error(state.message);
+      if (res.success) {
+        toast.success(res.message);
+        router.push(PATH.MY_PLAN);
+      } else if (!res.success) {
+        toast.error(res.message);
       }
-    });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   return (
@@ -99,22 +95,28 @@ export default function TripPlanner({
           endDate={endDate}
           dayText={daysText}
         />
-        <PlanSidebar
-          places={places}
-          daysCount={daysCount + 1}
-          markers={markers}
-          onTogglePlace={togglePlace}
-          selectedDay={selectedDay}
-          onSelectedDay={handleSelectDay}
-        />
-
+        <PlanSidebar>
+          <PlanDayFilterButtons
+            daysCount={daysCount + 1}
+            selectedDay={selectedDay}
+            onSelectedDay={handleSelectDay}
+          />
+          <PlanScheduleList
+            region={region}
+            daysCount={daysCount + 1}
+            places={places}
+            markers={markers}
+            onTogglePlace={togglePlace}
+            selectedDay={selectedDay}
+          />
+        </PlanSidebar>
         <div className="p-4">
           <button
-            className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600"
-            disabled={pending}
+            className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
             onClick={onSubmit}
+            disabled={isSaving}
           >
-            저장
+            {isSaving ? "저장 중..." : "저장"}
           </button>
         </div>
       </aside>

@@ -1,4 +1,4 @@
-import { MarkersByDay } from "@/components/plan/trip-planner";
+import { MarkersByDay } from "@/components/trip/type";
 
 export interface ParsePlanDto extends Omit<PlanDto, "places"> {
   places: MarkersByDay;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { Fragment, useCallback, useMemo, useState } from "react";
+import React, { Fragment, useCallback, useState } from "react";
 import {
   GoogleMap,
   MarkerF,
@@ -8,9 +8,9 @@ import {
   useJsApiLoader,
 } from "@react-google-maps/api";
 import { PlaceResult } from "@/service/google/places-dto";
-import { MarkersByDay } from "../plan/trip-planner";
 import GoogleMapLoading from "./google-map-loading";
 import GoogleMapError from "./google-map-error";
+import { MarkersByDay } from "../trip/type";
 
 interface GoogleMapComponentProps {
   center?: {
@@ -57,7 +57,7 @@ export default function GoogleMapComponent({
   zoom = 13,
   containerStyle = defaultContainerStyle,
   options = defaultOptions,
-  markers = [],
+  markers = {},
   children,
 }: GoogleMapComponentProps) {
   const { isLoaded, loadError } = useJsApiLoader({
@@ -94,21 +94,21 @@ export default function GoogleMapComponent({
       onUnmount={onUnmount}
       options={options}
     >
-      {Object.entries(markers).map(([dayIndex, dayMarkers]) => (
-        <Fragment key={`${dayIndex}-1일차`}>
-          {dayMarkers?.map((markerData: PlaceResult, index: number) => (
-            <Fragment key={`${markerData.place_id}-${index}`}>
+      {Object.entries(markers).map(([dayIndex, dayMarkers]) => {
+        const color =
+          MARKERS_DAY_COLORS[parseInt(dayIndex) % MARKERS_DAY_COLORS.length];
+        return (
+          <Fragment key={`${dayIndex}-1일차`}>
+            {dayMarkers?.map((markerData: PlaceResult, index: number) => (
               <MarkerF
+                key={markerData.place_id}
                 position={{
                   lat: markerData.geometry.location.lat,
                   lng: markerData.geometry.location.lng,
                 }}
                 icon={{
                   path: google.maps.SymbolPath.CIRCLE,
-                  fillColor:
-                    MARKERS_DAY_COLORS[
-                      parseInt(dayIndex) % MARKERS_DAY_COLORS.length
-                    ],
+                  fillColor: color,
                   fillOpacity: 1,
                   strokeWeight: 0,
                   scale: 14,
@@ -123,34 +123,31 @@ export default function GoogleMapComponent({
                   index + 1
                 }번)`}
               />
-              <PolylineF
-                options={{
-                  strokeColor:
-                    MARKERS_DAY_COLORS[
-                      parseInt(dayIndex) % MARKERS_DAY_COLORS.length
-                    ],
-                  strokeOpacity: 0,
-                  icons: [
-                    {
-                      icon: {
-                        path: "M 0,-1 0,1",
-                        strokeOpacity: 1,
-                        scale: 3,
-                      },
-                      offset: "0",
-                      repeat: "20px",
+            ))}
+            <PolylineF
+              options={{
+                strokeColor: color,
+                strokeOpacity: 0,
+                icons: [
+                  {
+                    icon: {
+                      path: "M 0,-1 0,1",
+                      strokeOpacity: 1,
+                      scale: 3,
                     },
-                  ],
-                }}
-                path={dayMarkers.map((markerData: PlaceResult) => ({
-                  lat: markerData.geometry.location.lat,
-                  lng: markerData.geometry.location.lng,
-                }))}
-              />
-            </Fragment>
-          ))}
-        </Fragment>
-      ))}
+                    offset: "0",
+                    repeat: "20px",
+                  },
+                ],
+              }}
+              path={dayMarkers.map((markerData: PlaceResult) => ({
+                lat: markerData.geometry.location.lat,
+                lng: markerData.geometry.location.lng,
+              }))}
+            />
+          </Fragment>
+        );
+      })}
     </GoogleMap>
   );
 }
