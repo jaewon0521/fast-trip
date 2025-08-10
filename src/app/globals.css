@@ -16,6 +16,12 @@
     padding: 0;
   }
 
+  /* DaisyUI Drawer 배경색 제거 */
+  :root,
+  [data-theme] {
+    background: none !important;
+  }
+
   body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
       "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
