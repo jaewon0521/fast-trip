@@ -83,6 +83,7 @@ export async function POST(request: Request) {
                     - formatted_address는 정확한 주소 형식으로 제공
                     - types는 Google Places API의 표준 타입 사용 (예: ["restaurant", "food", "establishment"])
                     - 좌표는 실제 위도/경도 값으로 제공
+                    - name은 한국어로 제공
 
                     **품질 체크리스트:**
                     응답하기 전 다음을 반드시 확인하세요:
@@ -92,8 +93,6 @@ export async function POST(request: Request) {
                     □ ${type} 스타일 장소가 70% 이상
                     □ 모든 장소가 실제 존재하는 곳
                     □ 올바른 JSON 배열 형식
-
-                    **중요:** 위 요구사항을 모두 만족하지 않으면 응답을 다시 작성해주세요.
 
                     지금 ${region}의 ${type} 여행 일정을 작성해주세요.`;
 
