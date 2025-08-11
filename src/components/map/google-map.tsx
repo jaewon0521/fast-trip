@@ -35,7 +35,7 @@ const defaultCenter = {
   lng: 126.972317,
 };
 
-const defaultOptions = {
+const defaultOptions: google.maps.MapOptions = {
   minZoom: 4,
   maxZoom: 18,
   cameraControl: false,
@@ -101,7 +101,7 @@ export default function GoogleMapComponent({
           <Fragment key={`${dayIndex}-1일차`}>
             {dayMarkers?.map((markerData: PlaceResult, index: number) => (
               <MarkerF
-                key={markerData.place_id}
+                key={`${markerData.place_id}-${index}`}
                 position={{
                   lat: markerData.geometry.location.lat,
                   lng: markerData.geometry.location.lng,

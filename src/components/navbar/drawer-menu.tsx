@@ -2,7 +2,6 @@ import { getUser } from "@/utils/auth";
 import { MenuIcon, XIcon } from "lucide-react";
 import UserInfo from "./user-info";
 import KakaoLogin from "./kakao-login";
-import Link from "next/link";
 import NavbarLink from "./navbar-link";
 
 export default async function DrawerMenu() {

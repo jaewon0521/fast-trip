@@ -40,31 +40,33 @@ export default function TripViewer({
   };
 
   return (
-    <div className="flex h-full">
-      <aside className="flex flex-col w-[375px] min-w-[375px] h-full border-r border-gray-200 bg-white shadow-md z-999 overflow-y-auto">
-        <PlanInfo
-          region={region}
-          startDate={startDate}
-          endDate={endDate}
-          dayText={daysText}
-        />
-        <div className="flex flex-col px-4">
-          <PlanDayFilterButtons
-            daysCount={daysCount + 1}
-            selectedDay={selectedDay}
-            onSelectedDay={handleSelectDay}
+    <div className="pt-20">
+      <div className="flex h-[calc(100vh-80px)]">
+        <aside className="flex flex-col w-[375px] min-w-[375px] h-full border-r border-gray-200 bg-white shadow-md z-999 overflow-y-auto">
+          <PlanInfo
+            region={region}
+            startDate={startDate}
+            endDate={endDate}
+            dayText={daysText}
           />
-          <TripScheduleDisplay
-            daysCount={daysCount + 1}
-            markers={markers}
-            selectedDay={selectedDay}
-          />
-        </div>
-      </aside>
-      <div className="duration-500 w-full">
-        <div className="h-full">
-          <div className="w-full h-full">
-            <GoogleMapComponent center={location} markers={renderMarker} />
+          <div className="flex flex-col px-4">
+            <PlanDayFilterButtons
+              daysCount={daysCount + 1}
+              selectedDay={selectedDay}
+              onSelectedDay={handleSelectDay}
+            />
+            <TripScheduleDisplay
+              daysCount={daysCount + 1}
+              markers={markers}
+              selectedDay={selectedDay}
+            />
+          </div>
+        </aside>
+        <div className="duration-500 w-full">
+          <div className="h-full">
+            <div className="w-full h-full">
+              <GoogleMapComponent center={location} markers={renderMarker} />
+            </div>
           </div>
         </div>
       </div>
