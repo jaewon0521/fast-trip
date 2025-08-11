@@ -3,52 +3,6 @@
 @plugin "daisyui" {
   themes: light --default, dark --prefersdark, pastel;
 }
-
-@layer base {
-  *,
-  *::before,
-  *::after {
-    box-sizing: border-box;
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-  }
-
-  /* DaisyUI Drawer 배경색 제거 */
-  :root,
-  [data-theme] {
-    background: none !important;
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
-      "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
-      "Helvetica Neue", sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    color: #1e293b;
-  }
-
-  a {
-    text-decoration: none;
-    color: inherit;
-  }
-}
-
-@theme {
-  --color-brand-100: #edf2fb;
-  --color-brand-200: #e2eafc;
-  --color-brand-300: #d7e3fc;
-  --color-brand-400: #ccdbfd;
-  --color-brand-500: #c1d3fe;
-  --color-brand-600: #b6ccfe;
-  --color-brand-700: #abc4ff;
-
-  --color-day-accent-100: #ff6b6b;
-  --color-day-accent-200: #4ecdc4;
-  --color-day-accent-300: #ffad60;
-  --color-day-accent-400: #abc4ff;
-  --color-day-accent-500: #a389d4;
-}
+@import "../style/theme.css" layer(theme);
+@import "../style/base.css" layer(base);
+@import "../style/components.css" layer(components);
