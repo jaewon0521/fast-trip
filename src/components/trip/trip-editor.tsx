@@ -87,7 +87,7 @@ export default function TripEditor({
   };
 
   return (
-    <div className="flex h-full">
+    <div className="flex h-[calc(100vh-80px)]">
       <aside className="flex flex-col w-[375px] min-w-[375px] h-full border-r border-gray-200 bg-white shadow-md z-999 overflow-y-auto">
         <PlanInfo
           region={region}

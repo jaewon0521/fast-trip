@@ -3,6 +3,7 @@
 import { MarkersByDay } from "@/components/trip/type";
 import { PATH } from "@/constants/path";
 import { extractError } from "@/lib/error";
+import { ServerActionResponseType } from "@/lib/types/error-types";
 import { PlanDto } from "@/service/plan/dto";
 import { getUser } from "@/utils/auth";
 import { createClientByServer } from "@/utils/supabase/server";
@@ -12,13 +13,14 @@ import { redirect } from "next/navigation";
 /**
  * 여행 계획 조회
  */
-export const getPlan = async (): Promise<PlanDto[]> => {
+export const getPlan = async (): Promise<
+  ServerActionResponseType<PlanDto[]>
+> => {
   const supabase = await createClientByServer();
+
   const user = await getUser();
 
-  if (!user) {
-    return redirect(PATH.HOME);
-  }
+  if (!user) redirect(PATH.LOGIN);
 
   const { data, error } = await supabase
     .from("plan")
@@ -26,10 +28,16 @@ export const getPlan = async (): Promise<PlanDto[]> => {
     .eq("userId", user.id);
 
   if (error) {
-    throw new Error(error.message);
+    return {
+      success: false,
+      errorMessage: error.message,
+    };
   }
 
-  return data;
+  return {
+    success: true,
+    data,
+  };
 };
 
 /**
@@ -53,19 +61,17 @@ export const getPlanDetail = async (id: string): Promise<PlanDto> => {
 /**
  * 여행 계획 저장
  */
-export const savePlan = async (
-  body: {
-    region: string;
-    places: MarkersByDay;
-    start_at: string;
-    end_at: string;
-  }
-) => {
+export const savePlan = async (body: {
+  region: string;
+  places: MarkersByDay;
+  start_at: string;
+  end_at: string;
+}) => {
   const supabase = await createClientByServer();
   const user = await getUser();
 
   if (!user) {
-    return redirect(PATH.HOME);
+    return redirect(PATH.LOGIN);
   }
 
   try {
@@ -87,7 +93,7 @@ export const savePlan = async (
     };
   } catch (e) {
     const error = extractError(e);
-    console.log(error);
+
     return {
       success: false,
       message: error.message,
@@ -104,7 +110,7 @@ export const deletePlan = async (_: unknown, formData: FormData) => {
   const user = await getUser();
 
   if (!user) {
-    redirect(PATH.HOME);
+    redirect(PATH.LOGIN);
   }
 
   try {

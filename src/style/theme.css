@@ -1,0 +1,21 @@
+
+/*
+* https://tailwindcss.com/docs/theme#theme-variable-namespaces
+* 색상, 사이즈, 폰트 등 설정
+*/
+
+@theme {
+  --color-brand-100: #edf2fb;
+  --color-brand-200: #e2eafc;
+  --color-brand-300: #d7e3fc;
+  --color-brand-400: #ccdbfd;
+  --color-brand-500: #c1d3fe;
+  --color-brand-600: #b6ccfe;
+  --color-brand-700: #abc4ff;
+
+  --color-day-accent-100: #ff6b6b;
+  --color-day-accent-200: #4ecdc4;
+  --color-day-accent-300: #ffad60;
+  --color-day-accent-400: #abc4ff;
+  --color-day-accent-500: #a389d4;
+}

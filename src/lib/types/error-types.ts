@@ -25,3 +25,7 @@ export type ErrorCode =
   | "INTERNAL_ERROR"
   | "NETWORK_ERROR"
   | "TIMEOUT_ERROR";
+
+export type ServerActionResponseType<T> = Promise<
+  { success: true; data: T } | { success: false; errorMessage: string }
+>;
