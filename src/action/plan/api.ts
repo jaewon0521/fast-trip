@@ -20,7 +20,7 @@ export const getPlan = async (): Promise<
 
   const user = await getUser();
 
-  if (!user) redirect(PATH.HOME);
+  if (!user) redirect(PATH.LOGIN);
 
   const { data, error } = await supabase
     .from("plan")
@@ -71,7 +71,7 @@ export const savePlan = async (body: {
   const user = await getUser();
 
   if (!user) {
-    return redirect(PATH.HOME);
+    return redirect(PATH.LOGIN);
   }
 
   try {
@@ -110,7 +110,7 @@ export const deletePlan = async (_: unknown, formData: FormData) => {
   const user = await getUser();
 
   if (!user) {
-    redirect(PATH.HOME);
+    redirect(PATH.LOGIN);
   }
 
   try {

@@ -1,7 +1,18 @@
+"use server";
+
+import { PATH } from "@/constants/path";
+import { getUser } from "@/utils/auth";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function Login() {
+export default async function Login() {
+  const user = await getUser();
+
+  if (user) {
+    redirect(PATH.HOME);
+  }
+
   return (
     <div className="flex flex-col items-center justify-center h-screen">
       <div>
