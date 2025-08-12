@@ -1,6 +1,7 @@
 import { useGoogleMapValue } from "@/app/context/GoogleMapProvider";
 import { cn } from "@/lib/utils";
 import { PlaceResult } from "@/service/google/places-dto";
+import { smoothPanTo } from "@/utils/map-event";
 import { Trash2 } from "lucide-react";
 
 interface PlaceItemProps {
@@ -21,8 +22,7 @@ export default function PlaceItem({
   const handleClickPlace = () => {
     if (!map) return;
 
-    map.panTo(place.geometry.location);
-    map.setZoom(14);
+    smoothPanTo(map, place.geometry.location);
   };
 
   return (
