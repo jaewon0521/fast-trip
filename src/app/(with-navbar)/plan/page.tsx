@@ -1,10 +1,8 @@
-import React from "react";
-
-import { httpClient } from "@/lib/fetch";
-import { extractError } from "@/lib/error";
-import { PlaceTextSearchResponse } from "@/service/google/places-dto";
-import { GeocodingResult } from "@/service/google/geocode-dto";
 import TripEditor from "@/components/trip/trip-editor";
+import { extractError } from "@/lib/error";
+import { httpClient } from "@/lib/fetch";
+import { GeocodingResult } from "@/service/google/geocode-dto";
+import { PlaceTextSearchResponse } from "@/service/google/places-dto";
 
 interface PlanPageSearchParams {
   region: string;

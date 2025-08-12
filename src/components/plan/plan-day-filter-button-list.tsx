@@ -1,4 +1,3 @@
-
 import PlaceDayButton from "./place-day-button";
 
 interface PlanDayFilterButtonsProps {
@@ -13,7 +12,7 @@ export default function PlanDayFilterButtons({
   onSelectedDay,
 }: PlanDayFilterButtonsProps) {
   return (
-    <section className="border-b border-gray-100">
+    <section className="py-2 pl-6 bg-white">
       <div className="flex gap-2 mt-2 overflow-x-auto">
         <PlaceDayButton
           dayNumber={0}
