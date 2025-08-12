@@ -1,26 +1,26 @@
 "use client";
 
-import React, { Fragment, useCallback, useState } from "react";
+import { useGoogleMapAction } from "@/app/context/GoogleMapProvider";
+import { PlaceResult } from "@/service/google/places-dto";
 import {
   GoogleMap,
   MarkerF,
   PolylineF,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import { PlaceResult } from "@/service/google/places-dto";
-import GoogleMapLoading from "./google-map-loading";
-import GoogleMapError from "./google-map-error";
+import React, { Fragment } from "react";
 import { MarkersByDay } from "../trip/type";
+import GoogleMapError from "./google-map-error";
+import GoogleMapLoading from "./google-map-loading";
 
 interface GoogleMapComponentProps {
-  center?: {
+  center: {
     lat: number;
     lng: number;
   };
   zoom?: number;
   containerStyle?: React.CSSProperties;
   options?: google.maps.MapOptions;
-  children?: React.ReactNode;
   className?: string;
   markers: MarkersByDay;
 }
@@ -54,29 +54,25 @@ const MARKERS_DAY_COLORS = [
 
 export default function GoogleMapComponent({
   center = defaultCenter,
-  zoom = 13,
+  zoom = 10,
   containerStyle = defaultContainerStyle,
   options = defaultOptions,
   markers = {},
-  children,
 }: GoogleMapComponentProps) {
   const { isLoaded, loadError } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!,
     language: "ko",
   });
-  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const { initMap, clearMap } = useGoogleMapAction();
 
   const onLoad = (mapInstance: google.maps.Map) => {
-    setMap(mapInstance);
+    initMap(mapInstance);
   };
 
-  const onUnmount = useCallback(function callback(
-    mapInstance: google.maps.Map
-  ) {
-    setMap(null);
-  },
-  []);
+  const onUnmount = () => {
+    clearMap();
+  };
 
   if (loadError) {
     return <GoogleMapError />;
@@ -85,6 +81,7 @@ export default function GoogleMapComponent({
   if (!isLoaded) {
     return <GoogleMapLoading />;
   }
+
   return (
     <GoogleMap
       mapContainerStyle={containerStyle}

@@ -18,7 +18,7 @@ export default function TripScheduleDisplay({
       : Array.from({ length: daysCount }, (_, index) => index);
 
   return (
-    <div>
+    <div className="pb-30">
       {daysToRender.map((day) => {
         const dayPlaces = markers[day] || [];
 
