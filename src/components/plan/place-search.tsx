@@ -72,7 +72,7 @@ export default function PlaceSearch({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [onClose]);
 
   return (
     <>

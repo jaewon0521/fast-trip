@@ -16,7 +16,7 @@ export default function DeletePlan({ id }: DeletePlanProps) {
     if (state?.error) {
       toast.error(state.message);
     }
-  }, [state?.error]);
+  }, [state?.error, state?.message]);
 
   return (
     <form action={formAction}>

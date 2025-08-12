@@ -60,7 +60,9 @@ class ApiBuilder {
   public async call<T>(): Promise<T> {
     const response = await fetch(this.baseUrl, this.options);
 
-    this.withErrorHandler && (await catchError(response, this.options.method));
+    if (this.withErrorHandler) {
+      await catchError(response, this.options.method);
+    }
 
     return await response.json();
   }
