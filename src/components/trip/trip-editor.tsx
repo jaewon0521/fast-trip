@@ -1,6 +1,7 @@
 "use client";
 
 import { savePlan } from "@/action/plan/api";
+import GoogleMapProvider from "@/app/context/GoogleMapProvider";
 import PlanSidebar from "@/components/plan/plan-sidebar";
 import { PATH } from "@/constants/path";
 import { LatLng } from "@/service/google/geocode-dto";
@@ -87,59 +88,61 @@ export default function TripEditor({
   };
 
   return (
-    <div className="flex h-[calc(100vh-80px)]">
-      <aside className="flex flex-col w-[375px] min-w-[375px] h-full bg-white shadow-md z-999 overflow-y-auto max-md:w-full max-md:min-w-unset max-md:max-w-unset">
-        <header className="flex flex-col py-8 bg-white">
-          <div className="px-6">
-            <PlanInfo
-              region={region}
-              startDate={startDate}
-              endDate={endDate}
-              dayText={daysText}
+    <GoogleMapProvider>
+      <div className="flex h-[calc(100vh-80px)]">
+        <aside className="flex flex-col w-[375px] min-w-[375px] h-full bg-white shadow-md z-999 overflow-y-auto max-md:w-full max-md:min-w-unset max-md:max-w-unset">
+          <header className="flex flex-col py-8 bg-white">
+            <div className="px-6">
+              <PlanInfo
+                region={region}
+                startDate={startDate}
+                endDate={endDate}
+                dayText={daysText}
+              />
+            </div>
+          </header>
+
+          <div className="sticky top-0 z-10">
+            {/* 모바일 버전 Goolge Map */}
+            <div className="w-full h-[200px] px-6 bg-white md:hidden">
+              <div className="relative w-full h-full overflow-hidden">
+                <GoogleMapComponent center={location} markers={renderMarker} />
+              </div>
+            </div>
+            <PlanDayFilterButtons
+              daysCount={daysCount + 1}
+              selectedDay={selectedDay}
+              onSelectedDay={handleSelectDay}
             />
           </div>
-        </header>
-
-        <div className="sticky top-0 z-10">
-          {/* 모바일 버전 Goolge Map */}
-          <div className="w-full h-[200px] px-6 bg-white md:hidden">
-            <div className="relative w-full h-full overflow-hidden">
+          <PlanSidebar>
+            <PlanScheduleList
+              region={region}
+              daysCount={daysCount + 1}
+              places={places}
+              markers={markers}
+              onTogglePlace={togglePlace}
+              selectedDay={selectedDay}
+            />
+          </PlanSidebar>
+          <div className="p-4">
+            <button
+              className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+              onClick={onSubmit}
+              disabled={isSaving}
+            >
+              {isSaving ? "저장 중..." : "저장"}
+            </button>
+          </div>
+        </aside>
+        <div className="duration-500 w-full max-md:hidden">
+          <div className="h-full">
+            <div className="w-full h-full">
               <GoogleMapComponent center={location} markers={renderMarker} />
             </div>
           </div>
-          <PlanDayFilterButtons
-            daysCount={daysCount + 1}
-            selectedDay={selectedDay}
-            onSelectedDay={handleSelectDay}
-          />
-        </div>
-        <PlanSidebar>
-          <PlanScheduleList
-            region={region}
-            daysCount={daysCount + 1}
-            places={places}
-            markers={markers}
-            onTogglePlace={togglePlace}
-            selectedDay={selectedDay}
-          />
-        </PlanSidebar>
-        <div className="p-4">
-          <button
-            className="w-full mt-10 btn btn-lg bg-blue-500 text-white text-lg rounded-2xl px-10 hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={onSubmit}
-            disabled={isSaving}
-          >
-            {isSaving ? "저장 중..." : "저장"}
-          </button>
-        </div>
-      </aside>
-      <div className="duration-500 w-full max-md:hidden">
-        <div className="h-full">
-          <div className="w-full h-full">
-            <GoogleMapComponent center={location} markers={renderMarker} />
-          </div>
         </div>
       </div>
-    </div>
+    </GoogleMapProvider>
   );
 }
