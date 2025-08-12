@@ -1,3 +1,5 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { addDays } from "date-fns";
 import { ko } from "date-fns/locale";
@@ -25,8 +27,8 @@ export default function DateRangePicker({
       animate
       disabled={{ before: new Date(), after: addDays(new Date(), 9) }}
       classNames={{
-        day_button: `${defaultClassNames.day_button} !p-2 !border-none `,
-        day: `${defaultClassNames.day} p-2 font-semibold`,
+        day_button: `${defaultClassNames.day_button} !border-none `,
+        day: `${defaultClassNames.day} p-2 font-semibold max-md:p-1 max-sm:p-0`,
         range_start: `bg-brand-500 !rounded-tl-3xl !rounded-bl-3xl`,
         range_end: `bg-brand-500 !rounded-tr-3xl !rounded-br-3xl`,
         selected: `${defaultClassNames.selected} !bg-brand-500 !text-white`,
