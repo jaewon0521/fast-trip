@@ -1,3 +1,4 @@
+import { useGoogleMapValue } from "@/app/context/GoogleMapProvider";
 import { cn } from "@/lib/utils";
 import { PlaceResult } from "@/service/google/places-dto";
 import { Trash2 } from "lucide-react";
@@ -13,8 +14,16 @@ export default function PlaceItem({
   number,
   onDeletePlace,
 }: PlaceItemProps) {
+  const map = useGoogleMapValue();
   const firstType = place.types?.[0];
   const typeLabel = firstType === "restaurant" ? "음식점" : "명소";
+
+  const handleClickPlace = () => {
+    if (!map) return;
+
+    map.panTo(place.geometry.location);
+    map.setZoom(14);
+  };
 
   return (
     <li className="flex items-center">
@@ -25,7 +34,10 @@ export default function PlaceItem({
       </div>
 
       {/* 장소 정보 영역 */}
-      <section className="w-[calc(100%-50px)] flex justify-between rounded-lg bg-white px-4 py-3 shadow-sm flex-1">
+      <section
+        className="w-[calc(100%-50px)] flex justify-between rounded-lg bg-white px-4 py-3 shadow-sm flex-1 cursor-pointer"
+        onClick={handleClickPlace}
+      >
         <div className="w-[calc(100%-50px)] flex flex-col gap-1">
           <span
             className="text-sm font-bold word-break-keep-all truncate"
