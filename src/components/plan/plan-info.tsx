@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-
 interface PlanInfoProps {
   region: string;
   dayText: string;
@@ -14,7 +12,7 @@ export default function PlanInfo({
   dayText,
 }: PlanInfoProps) {
   return (
-    <header className="sticky top-0 z-9999 flex flex-col px-6 py-8 border-b border-gray-100 bg-white shadow-sm">
+    <>
       <h1 className="text-lg font-semibold text-gray-800 mb-1">
         {region} 여행
       </h1>
@@ -24,6 +22,6 @@ export default function PlanInfo({
         </span>
         <span className="text-sm text-gray-500">{dayText}</span>
       </div>
-    </header>
+    </>
   );
 }

@@ -1,6 +1,6 @@
 import { PlaceResult } from "@/service/google/places-dto";
-import PlanSchedule from "./plan-schedule";
 import { MarkersByDay } from "../trip/type";
+import PlanSchedule from "./plan-schedule";
 
 interface PlanScheduleListProps {
   region: string;
@@ -25,7 +25,7 @@ export default function PlanScheduleList({
       : Array.from({ length: daysCount }, (_, index) => index);
 
   return (
-    <div className="py-2">
+    <div>
       {daysToRender.map((day) => (
         <PlanSchedule
           key={day}

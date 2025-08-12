@@ -1,5 +1,5 @@
-import { MarkersByDay } from "./type";
 import PlaceItem from "../place/place-item";
+import { MarkersByDay } from "./type";
 
 interface TripScheduleDisplayProps {
   daysCount: number;
@@ -18,7 +18,7 @@ export default function TripScheduleDisplay({
       : Array.from({ length: daysCount }, (_, index) => index);
 
   return (
-    <div className="py-2">
+    <div>
       {daysToRender.map((day) => {
         const dayPlaces = markers[day] || [];
 

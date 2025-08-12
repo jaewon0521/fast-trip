@@ -2,12 +2,12 @@
 
 import { LatLng } from "@/service/google/geocode-dto";
 import { differenceInDays } from "date-fns";
-import GoogleMapComponent from "../map/google-map";
-import PlanInfo from "../plan/plan-info";
-import PlanDayFilterButtons from "../plan/plan-day-filter-button-list";
-import { MarkersByDay } from "./type";
 import { useState } from "react";
+import GoogleMapComponent from "../map/google-map";
+import PlanDayFilterButtons from "../plan/plan-day-filter-button-list";
+import PlanInfo from "../plan/plan-info";
 import TripScheduleDisplay from "./trip-schedule-display";
+import { MarkersByDay } from "./type";
 
 interface TripViewerProps {
   markers: MarkersByDay;
@@ -41,19 +41,32 @@ export default function TripViewer({
 
   return (
     <div className="flex h-[calc(100vh-80px)]">
-      <aside className="flex flex-col w-[375px] min-w-[375px] h-full border-r border-gray-200 bg-white shadow-md z-999 overflow-y-auto">
-        <PlanInfo
-          region={region}
-          startDate={startDate}
-          endDate={endDate}
-          dayText={daysText}
-        />
-        <div className="flex flex-col px-4">
+      <aside className="flex flex-col w-[375px] min-w-[375px] h-full bg-white shadow-md z-999 overflow-y-auto max-md:w-full max-md:min-w-unset max-md:max-w-unset">
+        <header className="flex flex-col py-8 bg-white">
+          <div className="px-6">
+            <PlanInfo
+              region={region}
+              startDate={startDate}
+              endDate={endDate}
+              dayText={daysText}
+            />
+          </div>
+        </header>
+
+        <div className="sticky top-0 z-10">
+          {/* 모바일 버전 Goolge Map */}
+          <div className="w-full h-[200px] px-6 bg-white md:hidden">
+            <div className="relative w-full h-full overflow-hidden">
+              <GoogleMapComponent center={location} markers={renderMarker} />
+            </div>
+          </div>
           <PlanDayFilterButtons
             daysCount={daysCount + 1}
             selectedDay={selectedDay}
             onSelectedDay={handleSelectDay}
           />
+        </div>
+        <div className="px-4">
           <TripScheduleDisplay
             daysCount={daysCount + 1}
             markers={markers}
@@ -61,7 +74,7 @@ export default function TripViewer({
           />
         </div>
       </aside>
-      <div className="duration-500 w-full">
+      <div className="duration-500 w-full max-md:hidden">
         <div className="h-full">
           <div className="w-full h-full">
             <GoogleMapComponent center={location} markers={renderMarker} />
