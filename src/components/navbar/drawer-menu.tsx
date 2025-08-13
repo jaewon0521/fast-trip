@@ -1,8 +1,8 @@
 import { getUser } from "@/utils/auth";
 import { MenuIcon, XIcon } from "lucide-react";
-import UserInfo from "./user-info";
 import KakaoLogin from "./kakao-login";
 import NavbarLink from "./navbar-link";
+import UserInfo from "./user-info";
 
 export default async function DrawerMenu() {
   const user = await getUser();
@@ -14,7 +14,12 @@ export default async function DrawerMenu() {
         <MenuIcon />
       </label>
       <div className="drawer-side">
-        <div className="drawer-overlay" style={{ cursor: "auto" }}></div>
+        <div className="drawer-overlay"></div>
+        <label
+          htmlFor="my-drawer-4"
+          aria-label="close sidebar"
+          className="drawer-overlay"
+        ></label>
         <ul className="bg-base-200 text-base-content min-h-full w-80 p-4">
           <div>
             <div className="flex justify-end mb-4">
