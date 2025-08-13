@@ -6,3 +6,4 @@
 @import "../style/theme.css" layer(theme);
 @import "../style/base.css" layer(base);
 @import "../style/components.css" layer(components);
+@import "../style/utility.css" layer(utility);

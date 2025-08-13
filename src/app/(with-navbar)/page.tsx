@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+export const dynamic = "force-static";
+
 export default function Home() {
   return (
     <div>
@@ -9,7 +11,6 @@ export default function Home() {
           src="/images/trip-main.jpg"
           alt="Trip background"
           fill
-          priority
           className="object-cover"
         />
       </div>
@@ -24,7 +25,7 @@ export default function Home() {
             AI 여행 경로 추천 서비스는 나만의 여행을 더욱 특별하게 만들어
             줍니다.
           </p>
-          <div className="flex justify-center gap-8 mt-10">
+          <div className="flex justify-center gap-8 mt-10 animate-fadeInDown">
             <button className="btn btn-lg border-none bg-blue-500 text-white rounded-xl px-10 font-semibold hover:bg-blue-600">
               <Link href="/schedule/question">나만의 여행</Link>
             </button>
