@@ -1,9 +1,10 @@
+import { formattedDate } from "@/utils/date";
+import { addDays } from "date-fns";
 import { useState } from "react";
+import { DateRange } from "react-day-picker";
+import DateRangePicker from "../date/date-range-picker";
 import QuestionHeader from "./question-header";
 import QuestionTemplate from "./question-template";
-import DateRangePicker from "../date/date-range-picker";
-import { DateRange } from "react-day-picker";
-import { formattedDate } from "@/utils/date";
 
 interface QuestionDaysProps {
   onNext: (startDate: string, endDate: string) => void;
@@ -37,6 +38,12 @@ export default function QuestionDays({
           <DateRangePicker
             selected={selectedRange}
             onSelect={handleSelectDate}
+            disabled={{
+              before: new Date(),
+              after: selectedRange?.from
+                ? addDays(selectedRange?.from, 9)
+                : undefined,
+            }}
           />
         </div>
       }

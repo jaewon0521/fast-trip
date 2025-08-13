@@ -25,7 +25,6 @@ export default function DateRangePicker({
       locale={ko}
       navLayout="around"
       animate
-      disabled={{ before: new Date(), after: addDays(new Date(), 9) }}
       classNames={{
         day_button: `${defaultClassNames.day_button} !border-none `,
         day: `${defaultClassNames.day} p-2 font-semibold max-md:p-1 max-sm:p-0`,
