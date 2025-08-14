@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { extractError } from "@/lib/error";
+import { httpClient } from "@/lib/fetch";
 import {
   PlaceResult,
   PlaceTextSearchResponse,
 } from "@/service/google/places-dto";
-import PlaceSearchResultItem from "./place-search-result-item";
-import { httpClient } from "@/lib/fetch";
-import { extractError } from "@/lib/error";
 import { XIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import PlaceSearchResultItem from "./place-search-result-item";
 
 interface PlaceSearchProps {
   region: string;
@@ -143,10 +143,6 @@ export default function PlaceSearch({
             검색 결과가 없습니다.
           </div>
         )}
-
-        <div className="p-4 text-center text-gray-400 text-sm">
-          장소명을 입력하고 검색해보세요
-        </div>
       </div>
     </>
   );

@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
 import { Toaster } from "react-hot-toast";
+import "./globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,6 +16,30 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Fast Trip",
   description: "빠른 여행 플래너",
+  manifest: "/manifest.json",
+  keywords: [
+    "여행",
+    "여행 플래너",
+    "여행 계획",
+    "여행 안내",
+    "여행 정보",
+    "fast-trip",
+    "fasttrip",
+  ],
+  authors: [{ name: "Your Name" }],
+  icons: [
+    { rel: "apple-touch-icon", url: "/icons/icon-152x152.png" },
+    { rel: "icon", url: "/icons/icon-32x32.png" },
+  ],
+};
+
+export const viewport: Viewport = {
+  themeColor: "#ffffff",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({
@@ -25,6 +49,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" data-theme="pastel">
+      <head>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="Fast Trip" />
+        <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Toaster position="bottom-center" />
         <main>{children}</main>
