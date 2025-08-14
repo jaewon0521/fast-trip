@@ -28,7 +28,7 @@ export default function GoogleMapProvider({
 
   useEffect(() => {
     return () => action.clearMap();
-  }, []);
+  }, [action]);
 
   return (
     <GoogleMapValueContext.Provider value={map}>

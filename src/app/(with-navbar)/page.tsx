@@ -12,7 +12,6 @@ export default function Home() {
           className="object-cover"
         />
       </div>
-
       <section className="fixed top-0 left-0 w-full z-[-1] h-screen flex items-center justify-center max-md:p-10">
         <div className="absolute inset-0 bg-black/20" />
         <div className="relative z-10 flex flex-col items-center justify-center">
@@ -24,12 +23,18 @@ export default function Home() {
             줍니다.
           </p>
           <div className="flex justify-center gap-8 mt-10 animate-fadeInDown">
-            <button className="btn btn-lg border-none bg-blue-500 text-white rounded-xl px-10 font-semibold hover:bg-blue-600">
-              <Link href="/schedule/question">나만의 여행</Link>
-            </button>
-            <button className="btn btn-lg border-none bg-[rgba(0,0,0,0.2)] text-white rounded-xl  px-10 font-semibold hover:bg-black/30">
-              <Link href="/schedule/suggest">AI 추천 여행</Link>
-            </button>
+            <Link
+              href="/schedule/question"
+              className="btn btn-lg border-none bg-blue-500 text-white rounded-xl px-10 font-semibold hover:bg-blue-600"
+            >
+              나만의 여행
+            </Link>
+            <Link
+              href="/schedule/suggest"
+              className="btn btn-lg border-none bg-[rgba(0,0,0,0.2)] text-white rounded-xl  px-10 font-semibold hover:bg-black/30"
+            >
+              AI 추천 여행
+            </Link>
           </div>
         </div>
       </section>
