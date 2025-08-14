@@ -4,6 +4,7 @@ import { savePlan } from "@/action/plan/api";
 import GoogleMapProvider from "@/app/context/GoogleMapProvider";
 import PlanSidebar from "@/components/plan/plan-sidebar";
 import { PATH } from "@/constants/path";
+import { extractError } from "@/lib/error";
 import { LatLng } from "@/service/google/geocode-dto";
 import { PlaceResult } from "@/service/google/places-dto";
 import { differenceInDays } from "date-fns";
@@ -82,7 +83,10 @@ export default function TripEditor({
       } else if (!res.success) {
         toast.error(res.message);
       }
-    } finally {
+      setIsSaving(false);
+    } catch (e) {
+      const error = extractError(e);
+      toast.error(error.message);
       setIsSaving(false);
     }
   };
