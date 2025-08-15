@@ -17,6 +17,13 @@ export const metadata: Metadata = {
   title: "Fast Trip",
   description: "빠른 여행 플래너",
   manifest: "/manifest.json",
+  openGraph: {
+    title: "Fast Trip",
+    description: "빠른 여행 플래너",
+    url: "https://fast-trip-peach.vercel.app",
+    siteName: "Fast Trip",
+    images: [{ url: "/images/trip-main.png" }],
+  },
   keywords: [
     "여행",
     "여행 플래너",
@@ -25,8 +32,9 @@ export const metadata: Metadata = {
     "여행 정보",
     "fast-trip",
     "fasttrip",
+    "Fast Trip",
   ],
-  authors: [{ name: "Your Name" }],
+  authors: [{ name: "Fast Trip" }],
   icons: [
     { rel: "apple-touch-icon", url: "/icons/icon-152x152.png" },
     { rel: "icon", url: "/icons/icon-32x32.png" },
