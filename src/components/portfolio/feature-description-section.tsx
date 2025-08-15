@@ -18,7 +18,7 @@ export default function FeatureDescriptionSection({
   return (
     <div className="flex justify-between items-center gap-5 max-md:flex-col max-md:gap-1">
       <div className="flex flex-col items-center gap-2 px-5">
-        <span className="text-2xl font-bold">{title}</span>
+        <span className="text-2xl text-blue-400 font-bold">{title}</span>
         <span className="text-sm text-gray-500">{description}</span>
       </div>
       <ImageCarousel images={images} />
