@@ -43,7 +43,9 @@ export const getPlan = async (): Promise<
 /**
  * 여행 계획 상세 조회
  */
-export const getPlanDetail = async (id: string): Promise<PlanDto> => {
+export const getPlanDetail = async (
+  id: string
+): Promise<ServerActionResponseType<PlanDto>> => {
   const supabase = await createClientByServer();
 
   const { data, error } = await supabase
@@ -53,9 +55,16 @@ export const getPlanDetail = async (id: string): Promise<PlanDto> => {
     .single();
 
   if (error) {
-    throw new Error(error.message);
+    return {
+      success: false,
+      errorMessage: error.message,
+    };
   }
-  return data;
+
+  return {
+    success: true,
+    data,
+  };
 };
 
 /**
