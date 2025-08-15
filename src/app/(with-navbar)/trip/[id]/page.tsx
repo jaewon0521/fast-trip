@@ -39,7 +39,7 @@ export async function generateMetadata({
     openGraph: {
       title: `Fast Trip - ${plan.data.region} 여행`,
       description: `Fast Trip - ${plan.data.region} 여행 ${daysText} 일정을 확인해 보세요.`,
-      images: [{ url: "/images/trip-main.png" }],
+      images: [{ url: "/images/trip-main.jpg" }],
     },
   };
 }
