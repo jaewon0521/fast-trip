@@ -1,7 +1,9 @@
 import FeatureDescriptionSection from "@/components/portfolio/feature-description-section";
 import { TechBadgeGroup } from "@/components/portfolio/tech-badge-group";
 import Responsive from "@/components/responsive";
+import { PATH } from "@/constants/path";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function Portfolio() {
   return (
@@ -34,10 +36,21 @@ export default function Portfolio() {
             </span>
           </p>
           <div className="flex gap-2 mt-3">
-            <button className="btn btn-sm bg-blue-400 border-none text-white hover:bg-blue-500">
+            <Link
+              href={PATH.HOME}
+              className="btn btn-sm bg-blue-400 border-none text-white hover:bg-blue-500"
+            >
               둘러보기
-            </button>
-            <button className="btn btn-neutral btn-sm">Git</button>
+            </Link>
+            <Link
+              href="https://github.com/jaewon0521/fast-trip"
+              passHref
+              className="btn btn-neutral btn-sm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Git
+            </Link>
           </div>
         </section>
         <section className="flex flex-col gap-10">
