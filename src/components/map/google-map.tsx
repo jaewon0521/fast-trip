@@ -12,6 +12,15 @@ import React, { Fragment } from "react";
 import { MarkersByDay } from "../trip/type";
 import GoogleMapError from "./google-map-error";
 import GoogleMapLoading from "./google-map-loading";
+import {
+  DEFAULT_CENTER,
+  DEFAULT_CONTAINER_STYLE,
+  DEFAULT_MAP_OPTIONS,
+  MARKER_ICON_BASE,
+  MARKER_LABEL_BASE,
+  MARKERS_DAY_COLORS,
+  POLYLINE_OPTIONS_BASE,
+} from "@/constants/map-style";
 
 interface GoogleMapComponentProps {
   center: {
@@ -19,44 +28,13 @@ interface GoogleMapComponentProps {
     lng: number;
   };
   zoom?: number;
-  containerStyle?: React.CSSProperties;
-  options?: google.maps.MapOptions;
   className?: string;
   markers: MarkersByDay;
 }
 
-const defaultContainerStyle = {
-  width: "100%",
-  height: "100%",
-};
-
-const defaultCenter = {
-  lat: 37.555946,
-  lng: 126.972317,
-};
-
-const defaultOptions: google.maps.MapOptions = {
-  minZoom: 4,
-  maxZoom: 18,
-  cameraControl: false,
-  zoomControl: false,
-  mapTypeControl: false,
-  streetViewControl: false,
-};
-
-const MARKERS_DAY_COLORS = [
-  "#ff6b6b",
-  "#4ecdc4",
-  "#ffad60",
-  "#abc4ff",
-  "#a389d4",
-];
-
 export default function GoogleMapComponent({
-  center = defaultCenter,
+  center = DEFAULT_CENTER,
   zoom = 10,
-  containerStyle = defaultContainerStyle,
-  options = defaultOptions,
   markers = {},
 }: GoogleMapComponentProps) {
   const { isLoaded, loadError } = useJsApiLoader({
@@ -64,6 +42,7 @@ export default function GoogleMapComponent({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY!,
     language: "ko",
   });
+
   const { initMap, clearMap } = useGoogleMapAction();
 
   const onLoad = (mapInstance: google.maps.Map) => {
@@ -84,12 +63,12 @@ export default function GoogleMapComponent({
 
   return (
     <GoogleMap
-      mapContainerStyle={containerStyle}
+      mapContainerStyle={DEFAULT_CONTAINER_STYLE}
       center={center}
       zoom={zoom}
       onLoad={onLoad}
       onUnmount={onUnmount}
-      options={options}
+      options={DEFAULT_MAP_OPTIONS}
     >
       {Object.entries(markers).map(([dayIndex, dayMarkers]) => {
         const color =
@@ -104,17 +83,12 @@ export default function GoogleMapComponent({
                   lng: markerData.geometry.location.lng,
                 }}
                 icon={{
-                  path: google.maps.SymbolPath.CIRCLE,
+                  ...MARKER_ICON_BASE,
                   fillColor: color,
-                  fillOpacity: 1,
-                  strokeWeight: 0,
-                  scale: 14,
                 }}
                 label={{
+                  ...MARKER_LABEL_BASE,
                   text: String(index + 1),
-                  color: "white",
-                  fontSize: "12px",
-                  fontWeight: "bold",
                 }}
                 title={`${markerData.name} (${parseInt(dayIndex) + 1}일차 ${
                   index + 1
@@ -123,19 +97,8 @@ export default function GoogleMapComponent({
             ))}
             <PolylineF
               options={{
+                ...POLYLINE_OPTIONS_BASE,
                 strokeColor: color,
-                strokeOpacity: 0,
-                icons: [
-                  {
-                    icon: {
-                      path: "M 0,-1 0,1",
-                      strokeOpacity: 1,
-                      scale: 3,
-                    },
-                    offset: "0",
-                    repeat: "20px",
-                  },
-                ],
               }}
               path={dayMarkers.map((markerData: PlaceResult) => ({
                 lat: markerData.geometry.location.lat,
