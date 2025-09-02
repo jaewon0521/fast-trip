@@ -4,16 +4,9 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div>
-      <div className="fixed inset-0 -z-10">
-        <Image
-          src="/images/trip-main.jpg"
-          alt="Trip background"
-          fill
-          className="object-cover"
-        />
-      </div>
+      <div className="fixed inset-0 -z-10 bg-[url('/images/trip-main.jpg')] bg-cover bg-center" />
       <section className="fixed top-0 left-0 w-full z-[-1] h-screen flex items-center justify-center max-md:p-10">
-        <div className="absolute inset-0 bg-black/20" />
+        <div className="absolute" />
         <div className="relative z-10 flex flex-col items-center justify-center">
           <h2 className="text-5xl font-extrabold text-white mb-6 max-md:text-3xl max-md:mb-2">
             당신의 여행을 빠르게 계획하세요
